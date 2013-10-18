@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "Constant.h"
 
 @protocol ElementDelegate <NSObject>
@@ -26,13 +27,9 @@
 @property(nonatomic,readwrite) NSString* pinyin;
 @property(nonatomic,readwrite) NSString* descriptionEnglish;
 @property(nonatomic,readwrite) NSString* descriptionChinese;
-
-@property(strong,nonatomic) UILabel* elementInChinese;
-@property(strong,nonatomic) UILabel* elementInEnglish;
-@property(strong,nonatomic) UIImageView* sound;
-@property(strong,nonatomic) UILabel* elementDescription;
+@property(nonatomic,readwrite) NSString* soundName;
 
 -(void)setViewTitle:(NSString*)title;
--(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese;
+-(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName;
 
 @end

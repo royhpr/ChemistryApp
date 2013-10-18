@@ -18,6 +18,7 @@
 @property(strong, readwrite) NSString* pinyin;
 @property(strong, readwrite) NSString* descriptionEnglish;
 @property(strong, readwrite) NSString* descriptionChinese;
+@property(strong, readwrite) NSString* sound;
 
--(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese;
+-(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSound;
 @end

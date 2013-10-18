@@ -10,6 +10,16 @@
 
 @interface ElementController ()
 
+@property(strong,nonatomic) UILabel* elementInChinese;
+@property(strong,nonatomic) UILabel* elementPinying;
+@property(strong,nonatomic) UILabel* elementInEnglish;
+@property(strong,nonatomic) UILabel* elementPhanetic;
+@property(strong,nonatomic) UIImageView* sound;
+@property(strong,nonatomic) UILabel* elementDescription;
+
+@property(nonatomic,readwrite)CGPoint ViewOrigin;
+@property(nonatomic,readwrite)CGSize ViewSize;
+
 @end
 
 @implementation ElementController
@@ -24,7 +34,7 @@
     return self;
 }
 
--(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese
+-(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName
 {
     _elementEnglish = newElementEnglish;
     _elementChinese = newElementChinese;
@@ -32,6 +42,7 @@
     _pinyin = newPinyin;
     _descriptionEnglish = newDescriptionEnglish;
     _descriptionChinese = newDescriptionChinese;
+    _soundName = newSoundName;
 }
 
 -(void)setViewTitle:(NSString*)title
@@ -42,7 +53,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     self.navigationItem.hidesBackButton = YES;
     
@@ -74,51 +84,147 @@
     UIBarButtonItem* navButton = [[UIBarButtonItem alloc]initWithCustomView:rightItems];
     self.navigationItem.rightBarButtonItem = navButton;
     
+    [self initializeViewTitle];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self configureInterfaceView];
     [self initializeViewComponents];
 }
 
--(void)initializeViewComponents
+- (void)initializeViewTitle
 {
-    _elementInChinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, ELEMENT_START_POSITION_Y, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
+    //initialize title
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    title.font = [UIFont boldSystemFontOfSize:13.0];
+    title.backgroundColor = [UIColor clearColor];
+    title.textColor = [UIColor whiteColor];
+    [title setLineBreakMode:NSLineBreakByWordWrapping];
+    [title setNumberOfLines:2];
+    title.text = _currentTitle;
+    UIBarButtonItem* navButton = [[UIBarButtonItem alloc]initWithCustomView:title];
+    self.navigationItem.leftBarButtonItem = navButton;
+}
+
+- (void)initializeChinese
+{
+    //initialize body
+    self.elementInChinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.ViewOrigin.y + ELEMENT_START_POSITION_Y, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
     NSMutableString* chineseLabelText = [[NSMutableString alloc]initWithString:self.elementChinese];
-    [chineseLabelText appendString:NEW_LINE];
-    [chineseLabelText appendString:self.pinyin];
-    _elementInChinese.text = chineseLabelText;
-    _elementInChinese.font = [UIFont boldSystemFontOfSize:ELEMENT_VIEW_BODY_FONT_SIZE];
-    _elementInChinese.numberOfLines = 0;
-    [_elementInChinese setTextAlignment:NSTextAlignmentCenter];
-    [_elementInChinese sizeToFit];
+    self.elementInChinese.text = chineseLabelText;
+    self.elementInChinese.font = [UIFont boldSystemFontOfSize:18.0];
+    self.elementInChinese.numberOfLines = 0;
+    [self.elementInChinese setTextAlignment:NSTextAlignmentCenter];
+    [self.elementInChinese sizeToFit];
+}
+
+-(void)initializePinying
+{
+    //initialize body
+    self.elementPinying = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementInChinese.frame.origin.y + self.elementInChinese.frame.size.height, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
+    NSMutableString* pinyingLabelText = [[NSMutableString alloc]initWithString:self.pinyin];
+    self.elementPinying.text = pinyingLabelText;
+    self.elementPinying.font = [UIFont boldSystemFontOfSize:15.0];
+    self.elementPinying.numberOfLines = 0;
+    [self.elementPinying setTextAlignment:NSTextAlignmentCenter];
+    [self.elementPinying sizeToFit];
     
-    _elementInEnglish = [[UILabel alloc]initWithFrame:CGRectMake(_elementInChinese.frame.origin.x + _elementInChinese.frame.size.width + ELEMENT_COMPONENT_GAP, ELEMENT_START_POSITION_Y, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
+    if(self.elementPinying.frame.size.width > self.elementInChinese.frame.size.width)
+    {
+        self.elementInChinese.frame = CGRectMake(self.elementInChinese.frame.origin.x + ((self.elementPinying.frame.size.width - self.elementInChinese.frame.size.width)/2), self.elementInChinese.frame.origin.y,self.elementInChinese.frame.size.width,self.elementInChinese.frame.size.height);
+    }
+}
+
+- (void)initializeEnglish
+{
+    self.elementInEnglish = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementPinying.frame.size.height + self.elementPinying.frame.origin.y + ELEMENT_COMPONENT_GAP, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
     NSMutableString* englishLabelText = [[NSMutableString alloc]initWithString:self.elementEnglish];
-    [englishLabelText appendString:NEW_LINE];
-    [englishLabelText appendString:self.phanetic];
-    _elementInEnglish.text = englishLabelText;
-    _elementInEnglish.font = [UIFont boldSystemFontOfSize:ELEMENT_VIEW_BODY_FONT_SIZE];
-    _elementInEnglish.numberOfLines = 0;
-    [_elementInEnglish setTextAlignment:NSTextAlignmentCenter];
-    [_elementInEnglish sizeToFit];
+    self.elementInEnglish.text = englishLabelText;
+    self.elementInEnglish.font = [UIFont boldSystemFontOfSize:18.0];
+    self.elementInEnglish.numberOfLines = 0;
+    [self.elementInEnglish setTextAlignment:NSTextAlignmentCenter];
+    [self.elementInEnglish sizeToFit];
+}
+
+-(void)initializePhanetic
+{
+    //initialize body
+    self.elementPhanetic = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementInEnglish.frame.origin.y + self.elementInEnglish.frame.size.height, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
+    NSMutableString* phaneticLabelText = [[NSMutableString alloc]initWithString:self.phanetic];
+    self.elementPhanetic.text = phaneticLabelText;
+    self.elementPhanetic.font = [UIFont boldSystemFontOfSize:15.0];
+    self.elementPhanetic.numberOfLines = 0;
+    [self.elementPhanetic setTextAlignment:NSTextAlignmentCenter];
+    [self.elementPhanetic sizeToFit];
     
-    UIImage* image = [UIImage imageNamed:@"chapteraudio"];
-    _sound = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, ELEMENT_START_POSITION_Y + _elementInChinese.frame.size.height + ELEMENT_COMPONENT_GAP, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
-    [_sound setImage:image];
+    if(self.elementInEnglish.frame.size.width > self.elementPhanetic.frame.size.width)
+    {
+        self.elementPhanetic.frame = CGRectMake(self.elementPhanetic.frame.origin.x + ((self.elementInEnglish.frame.size.width - self.elementPhanetic.frame.size.width)/2), self.elementPhanetic.frame.origin.y, self.elementPhanetic.frame.size.width, self.elementPhanetic.frame.size.height);
+    }
+}
+
+- (void)initializeSoundImage
+{
+    UIImage* image = [UIImage imageNamed:@"audiobutton.jpg"];
+    self.sound = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.ViewOrigin.y + ELEMENT_START_POSITION_Y + self.elementInChinese.frame.size.height + ELEMENT_COMPONENT_GAP, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
+    [self.sound setImage:image];
+    self.sound.userInteractionEnabled = YES;
     
-    _elementDescription = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, _sound.frame.size.height + _sound.frame.origin.y + ELEMENT_COMPONENT_GAP, ELEMENT_DESCRIP_WIDTH, ELEMENT_DESCRIP_HEIGHT)];
+    self.sound.frame = CGRectMake(self.view.frame.size.width - self.sound.frame.size.width - ELEMENT_START_POSITION_X,  self.ViewOrigin.y + ELEMENT_START_POSITION_Y, self.sound.frame.size.width, self.sound.frame.size.height);
+    
+    UITapGestureRecognizer* tapToPlaySound = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playSound)];
+    tapToPlaySound.numberOfTapsRequired = 1;
+    tapToPlaySound.numberOfTouchesRequired = 1;
+    
+    [self.sound addGestureRecognizer:tapToPlaySound];
+}
+
+-(void)playSound
+{
+//    CFBundleRef mainBundle = CFBundleGetMainBundle();
+//    CFURLRef soundFileURL;
+//    soundFileURL = CFBundleCopyResourceURL(mainBundle, (CFStringRef)@"", CFSTR("mp3"), NULL);
+//    UInt32 soundID;
+//    AudioServicesCreateSystemSoundID(soundFileURL, &soundID);
+//    AudioServicesPlaySystemSound(soundID);
+}
+
+- (void)initializeDescription
+{
+    self.elementDescription = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementPhanetic.frame.size.height + self.elementPhanetic.frame.origin.y + ELEMENT_COMPONENT_GAP, ELEMENT_DESCRIP_WIDTH, ELEMENT_DESCRIP_HEIGHT)];
     NSMutableString* description = [[NSMutableString alloc]initWithString:self.descriptionEnglish];
     [description appendString:NEW_LINE];
     [description appendString:NEW_LINE];
     [description appendString:self.descriptionChinese];
-    _elementDescription.text = description;
-    _elementDescription.numberOfLines = 0;
-    [_elementDescription setLineBreakMode:NSLineBreakByWordWrapping];
-    [_elementDescription setTextAlignment:NSTextAlignmentLeft];
-    _elementDescription.font = [UIFont fontWithName:APP_FONT size:ELEMENT_VIEW_BODY_FONT_SIZE];
-    [_elementDescription sizeToFit];
+    self.elementDescription.text = description;
+    self.elementDescription.numberOfLines = 0;
+    [self.elementDescription setLineBreakMode:NSLineBreakByWordWrapping];
+    [self.elementDescription setTextAlignment:NSTextAlignmentLeft];
+    self.elementDescription.font = [UIFont systemFontOfSize:16.0];
+    [self.elementDescription sizeToFit];
+}
+
+-(void)initializeViewComponents
+{
+    [self initializeChinese];
     
-    [[self view]addSubview:_elementInChinese];
-    [[self view]addSubview:_elementInEnglish];
-    [[self view]addSubview:_sound];
-    [[self view]addSubview:_elementDescription];
+    [self initializeSoundImage];
+    
+    [self initializePinying];
+    
+    [self initializeEnglish];
+    
+    [self initializePhanetic];
+    
+    [self initializeDescription];
+    
+    [[self view]addSubview:self.elementInChinese];
+    [[self view]addSubview:self.sound];
+    [[self view]addSubview:self.elementPinying];
+    [[self view]addSubview:self.elementInEnglish];
+    [[self view]addSubview:self.elementPhanetic];
+    [[self view]addSubview:self.elementDescription];
 }
 
 -(void)goBackToChapter
@@ -131,10 +237,42 @@
     [_delegate returnToMainInterface];
 }
 
+- (void)configureInterfaceView
+{
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+    {
+        self.ViewOrigin = CGPointMake(0.0, self.view.frame.origin.y + self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height);
+        
+        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
+    }
+    else
+    {
+        self.ViewOrigin = self.view.frame.origin;
+        
+        self.ViewSize = self.view.frame.size;
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 @end

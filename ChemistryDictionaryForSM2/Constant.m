@@ -23,7 +23,7 @@ NSString* SYLLUBAS_IMAGE = @"syllabus.png";
 NSString* SEARCH_DIC_IMAGE = @"searchdictionary.png";
 NSString* QUIZ_IMAGE = @"quiz.png";
 
-float TITLE_WIDTH = 140.0;
+float TITLE_WIDTH = 180.0;
 float TITLE_HEIGHT = 40.0;
 
 NSString* PERIODIC_LABEL = @"Periodic Table\n周期表";
@@ -61,6 +61,7 @@ NSString* APP_FONT = @"Helvetica Neue";
 float ELEMENT_VIEW_BODY_FONT_SIZE = 14.5;
 float ELEMENT_DESCRIP_WIDTH = 300.0;
 float ELEMENT_DESCRIP_HEIGHT = 200.0;
+
 
 @implementation Constant
 

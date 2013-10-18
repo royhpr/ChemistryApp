@@ -11,6 +11,9 @@
 
 @interface InstructionController ()
 
+@property(nonatomic,readwrite)CGPoint ViewOrigin;
+@property(nonatomic,readwrite)CGSize ViewSize;
+
 @end
 
 @implementation InstructionController
@@ -27,7 +30,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self configureInterfaceView];
     [self addSubViews];
 }
 
@@ -37,8 +44,8 @@
     UIImage* chineseVersion = [UIImage imageNamed:CHINESE_VERSION];
     UIImage* contributor = [UIImage imageNamed:CONTRIBUTORS];
     
-    UIImageView* englishVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - englishVersion.size.width/SCALE_DOWN_FACTOR) / 2, 0.0, englishVersion.size.width/SCALE_DOWN_FACTOR, englishVersion.size.height/SCALE_DOWN_FACTOR)];
-    UIImageView* chineseVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - chineseVersion.size.width/SCALE_DOWN_FACTOR) / 2, englishVersion.size.height/SCALE_DOWN_FACTOR, chineseVersion.size.width/SCALE_DOWN_FACTOR, chineseVersion.size.height/SCALE_DOWN_FACTOR)];
+    UIImageView* englishVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - englishVersion.size.width/SCALE_DOWN_FACTOR) / 2, self.ViewOrigin.y + 10.0, englishVersion.size.width/SCALE_DOWN_FACTOR, englishVersion.size.height/SCALE_DOWN_FACTOR)];
+    UIImageView* chineseVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - chineseVersion.size.width/SCALE_DOWN_FACTOR) / 2, englishVersionView.frame.origin.y + englishVersionView.frame.size.height + 10.0, chineseVersion.size.width/SCALE_DOWN_FACTOR, chineseVersion.size.height/SCALE_DOWN_FACTOR)];
     UIImageView* contributorView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - contributor.size.width/SCALE_DOWN_FACTOR) / 2, self.view.frame.size.height - contributor.size.height/SCALE_DOWN_FACTOR - ELEMENT_COMPONENT_GAP, contributor.size.width/SCALE_DOWN_FACTOR, contributor.size.height/SCALE_DOWN_FACTOR)];
     
     [englishVersionView setImage:englishVersion];
@@ -50,21 +57,53 @@
     [[self view]addSubview:chineseVersionView];
     [[self view]addSubview:contributorView];
     
-    UISwipeGestureRecognizer* swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
-    swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goNext:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    tapGestureRecognizer.numberOfTouchesRequired = 1;
     
-    [[self view]addGestureRecognizer:swipeLeftGestureRecognizer];
+    [[self view]addGestureRecognizer:tapGestureRecognizer];
 }
 
-- (void)handleSwipeLeft:(UIGestureRecognizer*)recognizer
+- (void)goNext:(UIGestureRecognizer*)recognizer
 {
     [self performSegueWithIdentifier:@"FromInstructionToMain" sender:self];
+}
+
+- (void)configureInterfaceView
+{
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+    {
+        self.ViewOrigin = CGPointMake(0.0, self.view.frame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
+        
+        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
+    }
+    else
+    {
+        self.ViewOrigin = self.view.frame.origin;
+        
+        self.ViewSize = self.view.frame.size;
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 
 @end

@@ -27,11 +27,83 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.hidesBackButton = YES;
+    
+    //set up right item
+    UIImageView* homeView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home.png"]];
+    homeView.frame=CGRectMake(0, 0, 40, 40);
+    homeView.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer* singleTapHome = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goBackToMain)];
+    [singleTapHome setNumberOfTapsRequired:1];
+    [homeView addGestureRecognizer:singleTapHome];
+    
+    UIBarButtonItem* rightNavButton = [[UIBarButtonItem alloc]initWithCustomView:homeView];
+    self.navigationItem.rightBarButtonItem = rightNavButton;
+    
+    //set up left item
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    title.font = [UIFont boldSystemFontOfSize:20.0];
+    title.backgroundColor = [UIColor clearColor];
+    title.textColor = [UIColor whiteColor];
+    [title setLineBreakMode:NSLineBreakByWordWrapping];
+    [title setNumberOfLines:2];
+    title.text = @"Dictionary Search 词典搜索";
+    UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
+    self.navigationItem.leftBarButtonItem = leftNavButton;
+}
+
+-(void)goBackToMain
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)populateElementList
+{
+    _elementList = [[NSMutableArray alloc]init];
+    _database = [NSArray arrayWithArray:[[DictionaryDB database]elementList]];
+    
+    for(ElementModel* currentElement in _database)
+    {
+        NSMutableString* chinesePlusEnglish = [NSMutableString stringWithString:currentElement.elementEnglish];
+        [chinesePlusEnglish appendString:@" "];
+        [chinesePlusEnglish appendString:currentElement.elementChinese];
+        [_elementList addObject:chinesePlusEnglish];
+    }
+    
+    if(_elementList.count != 0)
+    {
+        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"" ascending:YES];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        [_elementList sortUsingDescriptors:sortDescriptors];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self populateElementList];
+}
+
+- (void)filterContentForSearchText:(NSString*)searchText
+{
+    NSPredicate *resultPredicate = [NSPredicate
+                                    predicateWithFormat:@"SELF contains[cd] %@",
+                                    searchText];
+    
+    _searchResult = (NSMutableArray*)[_elementList filteredArrayUsingPredicate:resultPredicate];
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString];
+    
+    return YES;
+}
+
+-(void)returnToMainInterface
+{
+    [self.delegate returnToMainInterface];
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,77 +116,96 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    if(tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        return _searchResult.count;
+    }
+    return _elementList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    // Configure the cell...
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    NSString* element;
+    if(tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        element = [_searchResult objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        element = [_elementList objectAtIndex:indexPath.row];
+    }
+    cell.textLabel.text = element;
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    if(tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        _selectedElement = [_searchResult objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        _selectedElement = [_elementList objectAtIndex:indexPath.row];
+    }
+    
+    [self performSegueWithIdentifier:@"FromDictionaryToElement" sender:self];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"FromDictionaryToElement"])
+    {
+        ElementController* element = [segue destinationViewController];
+        element.delegate = self;
+        
+        for(ElementModel* currentElement in _database)
+        {
+            NSMutableString* expectedElement = [NSMutableString stringWithString:currentElement.elementEnglish];
+            [expectedElement appendString:@" "];
+            [expectedElement appendString:currentElement.elementChinese];
+            if([expectedElement isEqualToString:_selectedElement])
+            {
+                [element setViewTitle: @""];
+                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound];
+            }
+        }
+    }
 }
 
- */
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 @end

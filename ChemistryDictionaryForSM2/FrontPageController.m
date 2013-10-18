@@ -27,7 +27,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     [self addSubviews];
 }
 
@@ -35,32 +34,36 @@
 {
     UIImage* titleLogo = [UIImage imageNamed:TITLE_LOGO];
     UIImage* nusLogo = [UIImage imageNamed:NUS_LOGO];
+    UIImage* facultyLogo = [UIImage imageNamed:@"facultyinfo.png"];
     
     UIImageView* titleLogoView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - titleLogo.size.width/2.5) / 2, self.view.frame.size.height / 6, titleLogo.size.width / 2.5, titleLogo.size.height / 2.5)];
     
-    UIImageView* nusLogoView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - nusLogo.size.width/2.5) / 2, self.view.frame.size.height - nusLogo.size.height / 2.5, nusLogo.size.width / 2.5, nusLogo.size.height / 2.5)];
+    UIImageView* nusLogoView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - nusLogo.size.width/2.5) / 2, titleLogoView.frame.origin.y + titleLogoView.frame.size.height + 80.0, nusLogo.size.width / 2.5, nusLogo.size.height / 2.5)];
+    
+    UIImageView* facultyLogoView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - facultyLogo.size.width/2.5) / 2, nusLogoView.frame.origin.y + nusLogoView.frame.size.height, facultyLogo.size.width / 2.5, facultyLogo.size.height / 2.5)];
     
     [titleLogoView setImage:titleLogo];
     [nusLogoView setImage:nusLogo];
+    [facultyLogoView setImage:facultyLogo];
     
     titleLogoView.userInteractionEnabled = YES;
     nusLogoView.userInteractionEnabled = YES;
+    facultyLogoView.userInteractionEnabled = YES;
     
     [[self view]addSubview:titleLogoView];
     [[self view]addSubview:nusLogoView];
+    [[self view]addSubview:facultyLogoView];
     
-    UISwipeGestureRecognizer* swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
-    swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [[self view]addGestureRecognizer:swipeLeftGestureRecognizer];
-    
-    UITapGestureRecognizer* singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
+    UITapGestureRecognizer* singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goNext:)];
     [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    [titleLogoView addGestureRecognizer:singleTapGestureRecognizer];
+    singleTapGestureRecognizer.numberOfTapsRequired = 1;
+    singleTapGestureRecognizer.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:singleTapGestureRecognizer];
     
     [[self navigationController] setNavigationBarHidden:YES animated:NO];
 }
 
-- (void)handleSwipeLeft:(UIGestureRecognizer*)recognizer
+- (void)goNext:(UIGestureRecognizer*)recognizer
 {
     [self performSegueWithIdentifier:@"FromFrontToInstruction" sender:self];
 }
@@ -70,5 +73,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 @end

@@ -10,7 +10,7 @@
 
 @implementation ElementModel
 
--(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese
+-(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSound
 {
     if(self == [super init])
     {
@@ -21,6 +21,7 @@
         self.pinyin = newPinyin;
         self.descriptionEnglish = newDescriptionEnglish;
         self.descriptionChinese = newDescriptionChinese;
+        self.sound = newSound;
     }
     return self;
 }

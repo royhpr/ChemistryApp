@@ -26,12 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.navigationItem.hidesBackButton = YES;
     
@@ -88,9 +82,9 @@
 
 -(void)updateCurrentTitle
 {
-    UIView* leftItem = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    UIView* leftItem = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
     
-    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
     title.font = [UIFont boldSystemFontOfSize:13.0];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor whiteColor];
@@ -153,6 +147,7 @@
         default:
             break;
     }
+    _currentTitle = title.text;
     [leftItem addSubview:title];
     UIBarButtonItem* navButton = [[UIBarButtonItem alloc]initWithCustomView:leftItem];
     self.navigationItem.leftBarButtonItem = navButton;
@@ -169,7 +164,10 @@
         
         if([number isEqualToString:currentElement.chapter])
         {
-            [_currentChapterElements addObject:currentElement.elementEnglish];
+            NSMutableString* element = [NSMutableString stringWithString:currentElement.elementEnglish];
+            [element appendString:@" "];
+            [element appendString:currentElement.elementChinese];
+            [_currentChapterElements addObject:element];
         }
     }
     
@@ -244,44 +242,7 @@ shouldReloadTableForSearchString:(NSString *)searchString
     [_delegate returnToMainInterface];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -305,12 +266,16 @@ shouldReloadTableForSearchString:(NSString *)searchString
     {
         ElementController* element = [segue destinationViewController];
         element.delegate = self;
-        [element setCurrentTitle:_currentTitle];
+        
         for(ElementModel* currentElement in _database)
         {
-            if([currentElement.chapter isEqualToString: [NSString stringWithFormat:@"%d", _chapterNumber]] && [currentElement.elementEnglish isEqualToString:_selectedElement])
+            NSMutableString* expectedElement = [NSMutableString stringWithString:currentElement.elementEnglish];
+            [expectedElement appendString:@" "];
+            [expectedElement appendString:currentElement.elementChinese];
+            if([currentElement.chapter isEqualToString: [NSString stringWithFormat:@"%d", _chapterNumber]] && [expectedElement isEqualToString:_selectedElement])
             {
-                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese];
+                [element setViewTitle:_currentTitle];
+                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound];
             }
         }
     }
@@ -320,5 +285,21 @@ shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self populateElementList];
 }
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 @end

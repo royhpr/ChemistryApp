@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SyllabusController.h"
+#import "DictionaryController.h"
+#import "PeriodicTableController.h"
+#import "CustomNavigationController.h"
+#import "QuizController.h"
 
-@interface ViewController : UIViewController <SyllabusDelegate>
+@interface ViewController : UIViewController <SyllabusDelegate,DictionaryDelegate>
 
 @property(strong, nonatomic)UIImage* periodicTable;
 @property(strong, nonatomic)UIImage* syllabus;

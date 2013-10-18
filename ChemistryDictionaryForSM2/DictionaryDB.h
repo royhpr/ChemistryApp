@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import "ElementModel.h"
+#import "PeriodicTableElementModel.h"
 
 @interface DictionaryDB : NSObject
 {
@@ -16,4 +18,6 @@
 
 +(DictionaryDB*)database;
 -(NSArray*)elementList;
+-(NSArray*)periodicTableElementList;
+
 @end
