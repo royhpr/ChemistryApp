@@ -28,7 +28,15 @@
 {
     [super viewDidLoad];
     [self addSubviews];
+    
+    [self performSelector:@selector(progressToNextView) withObject:self afterDelay:3.0];
 }
+
+-(void)progressToNextView
+{
+    [self performSegueWithIdentifier:@"FromFrontToInstruction" sender:self];
+}
+
 
 - (void)addSubviews
 {
@@ -54,11 +62,11 @@
     [[self view]addSubview:nusLogoView];
     [[self view]addSubview:facultyLogoView];
     
-    UITapGestureRecognizer* singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goNext:)];
-    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    singleTapGestureRecognizer.numberOfTapsRequired = 1;
-    singleTapGestureRecognizer.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:singleTapGestureRecognizer];
+//    UITapGestureRecognizer* singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goNext:)];
+//    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
+//    singleTapGestureRecognizer.numberOfTapsRequired = 1;
+//    singleTapGestureRecognizer.numberOfTouchesRequired = 1;
+//    [self.view addGestureRecognizer:singleTapGestureRecognizer];
     
     [[self navigationController] setNavigationBarHidden:YES animated:NO];
 }

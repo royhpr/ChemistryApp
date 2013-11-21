@@ -40,28 +40,58 @@
 
 -(void)addSubViews
 {
-    UIImage* englishVersion = [UIImage imageNamed:ENGLISH_VERSION];
-    UIImage* chineseVersion = [UIImage imageNamed:CHINESE_VERSION];
-    UIImage* contributor = [UIImage imageNamed:CONTRIBUTORS];
+    UIImage* instructionImage = [UIImage imageNamed:INSTRUCTION_IMAGE];
+    float widthFactor = instructionImage.size.width / self.ViewSize.width;
+    float heightFactor = instructionImage.size.height / self.ViewSize.height;
+    float scaleFactor = widthFactor > heightFactor ? widthFactor:heightFactor;
     
-    UIImageView* englishVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - englishVersion.size.width/SCALE_DOWN_FACTOR) / 2, self.ViewOrigin.y + 10.0, englishVersion.size.width/SCALE_DOWN_FACTOR, englishVersion.size.height/SCALE_DOWN_FACTOR)];
-    UIImageView* chineseVersionView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - chineseVersion.size.width/SCALE_DOWN_FACTOR) / 2, englishVersionView.frame.origin.y + englishVersionView.frame.size.height + 10.0, chineseVersion.size.width/SCALE_DOWN_FACTOR, chineseVersion.size.height/SCALE_DOWN_FACTOR)];
-    UIImageView* contributorView = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - contributor.size.width/SCALE_DOWN_FACTOR) / 2, self.view.frame.size.height - contributor.size.height/SCALE_DOWN_FACTOR - ELEMENT_COMPONENT_GAP, contributor.size.width/SCALE_DOWN_FACTOR, contributor.size.height/SCALE_DOWN_FACTOR)];
+//    UIImageView* instructionView = [[UIImageView alloc]initWithFrame:CGRectMake(self.ViewOrigin.x, self.ViewOrigin.y + 5.0, instructionImage.size.width/scaleFactor, instructionImage.size.height/scaleFactor)];
+    UIImageView* instructionView = [[UIImageView alloc]initWithFrame:CGRectZero];
+    instructionView.frame = CGRectMake(self.ViewOrigin.x, (self.ViewSize.height-instructionImage.size.height/scaleFactor)/2.0, instructionImage.size.width/scaleFactor, instructionImage.size.height/scaleFactor);
     
-    [englishVersionView setImage:englishVersion];
-    [chineseVersionView setImage:chineseVersion];
-    [contributorView setImage:contributor];
- 
-    
-    [[self view]addSubview:englishVersionView];
-    [[self view]addSubview:chineseVersionView];
-    [[self view]addSubview:contributorView];
+    [instructionView setImage:instructionImage];
+    [[self view]addSubview:instructionView];
     
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goNext:)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     
     [[self view]addGestureRecognizer:tapGestureRecognizer];
+//    UIImage* chineseVersion = [UIImage imageNamed:CHINESE_VERSION];
+//    UIImage* contributor = [UIImage imageNamed:CONTRIBUTORS];
+//    float chineseHeight = chineseVersion.size.height * self.ViewSize.width / chineseVersion.size.width;
+//    float englishHeight = englishVersion.size.height * self.ViewSize.width / englishVersion.size.width;
+//    float contributorWidth = self.ViewSize.width * 3 / 4;
+//    float contributorHeight = contributor.size.height * contributorWidth / contributor.size.width;
+    
+    
+    
+    
+//    UIImageView* chineseVersionView = [[UIImageView alloc]initWithFrame:CGRectMake(self.ViewOrigin.x, englishVersionView.frame.origin.y + englishVersionView.frame.size.height + 5.0, self.ViewSize.width, chineseHeight)];
+//    
+//    UILabel* nextViewInstruction = [[UILabel alloc]initWithFrame:CGRectZero];
+//    nextViewInstruction.text = @"Tap screen to continue";
+//    [nextViewInstruction setTextColor:[UIColor lightGrayColor]];
+//    [nextViewInstruction sizeToFit];
+//    
+//    CGRect frame = nextViewInstruction.frame;
+//    frame.origin.x = (self.ViewSize.width - frame.size.width) / 2;
+//    frame.origin.y = chineseVersionView.frame.origin.y + chineseVersionView.frame.size.height + 3.0;
+//    nextViewInstruction.frame = frame;
+//    
+//    UIImageView* contributorView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - contributorWidth)/2.0, self.view.frame.size.height - contributorHeight - 5.0, contributorWidth, contributorHeight)];
+//    
+//    [englishVersionView setImage:englishVersion];
+//    [chineseVersionView setImage:chineseVersion];
+//    [contributorView setImage:contributor];
+ 
+    
+    
+//    [[self view]addSubview:chineseVersionView];
+//    [[self view]addSubview:nextViewInstruction];
+//    [[self view]addSubview:contributorView];
+    
+    
 }
 
 - (void)goNext:(UIGestureRecognizer*)recognizer

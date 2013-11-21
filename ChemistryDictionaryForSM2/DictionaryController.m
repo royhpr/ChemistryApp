@@ -42,13 +42,13 @@
     self.navigationItem.rightBarButtonItem = rightNavButton;
     
     //set up left item
-    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 260, 60)];
     title.font = [UIFont boldSystemFontOfSize:20.0];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor whiteColor];
     [title setLineBreakMode:NSLineBreakByWordWrapping];
     [title setNumberOfLines:2];
-    title.text = @"Dictionary Search 词典搜索";
+    title.text = @"Dictionary Search 字典搜索";
     UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
     self.navigationItem.leftBarButtonItem = leftNavButton;
 }
@@ -68,6 +68,8 @@
         NSMutableString* chinesePlusEnglish = [NSMutableString stringWithString:currentElement.elementEnglish];
         [chinesePlusEnglish appendString:@" "];
         [chinesePlusEnglish appendString:currentElement.elementChinese];
+        
+        if(![_elementList containsObject:chinesePlusEnglish])
         [_elementList addObject:chinesePlusEnglish];
     }
     
@@ -185,7 +187,7 @@ shouldReloadTableForSearchString:(NSString *)searchString
             if([expectedElement isEqualToString:_selectedElement])
             {
                 [element setViewTitle: @""];
-                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound];
+                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound : currentElement.sketch];
             }
         }
     }

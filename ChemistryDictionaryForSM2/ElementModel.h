@@ -19,6 +19,8 @@
 @property(strong, readwrite) NSString* descriptionEnglish;
 @property(strong, readwrite) NSString* descriptionChinese;
 @property(strong, readwrite) NSString* sound;
+@property(strong, readwrite) NSString* sketch;
 
--(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSound;
+-(id)initializeWithChapter: (NSString*)newChapter : (NSString*)newElementEnglish : (NSString*)newPhanetic : (NSString*)newElementChinese : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSound : (NSString*)newSketch;
+
 @end

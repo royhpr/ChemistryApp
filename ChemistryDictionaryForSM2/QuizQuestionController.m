@@ -21,7 +21,7 @@
 @property(nonatomic,readwrite)NSMutableArray* remainingQuestionParameters;
 
 @property(strong,nonatomic)UILabel* scoreView;
-@property(strong,nonatomic)UILabel* questionView;
+@property(strong,nonatomic)UIView* questionView;
 @property(strong,nonatomic)UIButton* answerOneView;
 @property(strong,nonatomic)UIButton* answerTwoView;
 @property(strong,nonatomic)UIButton* answerThreeView;
@@ -113,7 +113,7 @@
     title.textColor = [UIColor whiteColor];
     [title setLineBreakMode:NSLineBreakByWordWrapping];
     [title setNumberOfLines:2];
-    title.text = @"Quiz 测试";
+    title.text = @"Quiz 测验";
     UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
     self.navigationItem.leftBarButtonItem = leftNavButton;
     
@@ -171,14 +171,44 @@
 -(void)initializeQuestionView
 {
     self.questionView = [[UILabel alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 300.0)/2, self.scoreView.frame.origin.y + self.scoreView.frame.size.height + 20.0, 300.0, 60.0)];
-    [self.questionView setTextAlignment:NSTextAlignmentCenter];
     [self.questionView setBackgroundColor:[UIColor colorWithRed:169.0/255.0 green:192.0/255.0 blue:218.0/255.0 alpha:1]];
-    [self.questionView setTextColor:[UIColor blackColor]];
-    [self.questionView setFont:[UIFont systemFontOfSize:35.0]];
     self.questionView.layer.cornerRadius = 5.0;
     self.questionView.layer.borderColor = [UIColor colorWithRed:90.0/255.0 green:139.0/255.0 blue:196.0/255.0 alpha:1].CGColor;
     self.questionView.layer.borderWidth = 2.0;
-    [self.questionView setText:self.question];
+    
+    if([self.question isEqualToString:@"-"])
+    {
+        NSMutableString* imageName = [NSMutableString stringWithString:self.answer];
+        [imageName appendString:@".png"];
+        
+        UIImage* image = [UIImage imageNamed:imageName];
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
+        [imageView setImage:image];
+        [imageView setBackgroundColor:[UIColor clearColor]];
+        
+        CGRect frame = imageView.frame;
+        frame.origin = CGPointMake((self.questionView.frame.size.width-imageView.frame.size.width)/2.0, (self.questionView.frame.size.height-imageView.frame.size.height)/2.0);
+        imageView.frame = frame;
+        
+        [self.questionView addSubview:imageView];
+    }
+    else
+    {
+        UILabel* title = [[UILabel alloc]initWithFrame:CGRectZero];
+        [title setTextAlignment:NSTextAlignmentCenter];
+        [title setTextColor:[UIColor blackColor]];
+        [title setFont:[UIFont systemFontOfSize:30.0]];
+        [title setText:self.question];
+        [title sizeToFit];
+        
+        CGRect frame = title.frame;
+        frame.origin.x = (self.questionView.frame.size.width - title.frame.size.width)/2.0;
+        frame.origin.y = (self.questionView.frame.size.height - title.frame.size.height)/2.0;
+        title.frame = frame;
+        
+        [self.questionView addSubview:title];
+    }
+
     [self.view addSubview:self.questionView];
 }
 

@@ -275,7 +275,7 @@ shouldReloadTableForSearchString:(NSString *)searchString
             if([currentElement.chapter isEqualToString: [NSString stringWithFormat:@"%d", _chapterNumber]] && [expectedElement isEqualToString:_selectedElement])
             {
                 [element setViewTitle:_currentTitle];
-                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound];
+                [element setElementDetails:currentElement.elementEnglish :currentElement.elementChinese :currentElement.phanetic :currentElement.pinyin :currentElement.descriptionEnglish :currentElement.descriptionChinese : currentElement.sound : currentElement.sketch];
             }
         }
     }

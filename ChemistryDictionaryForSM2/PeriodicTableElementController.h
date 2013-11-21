@@ -13,6 +13,7 @@
 #import "ViewController.h"
 
 @interface PeriodicTableElementController : UIViewController
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 
 @property(nonatomic,readwrite)PeriodicTableElementModel* element;
 

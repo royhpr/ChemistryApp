@@ -75,7 +75,7 @@
     title.textColor = [UIColor whiteColor];
     [title setLineBreakMode:NSLineBreakByWordWrapping];
     [title setNumberOfLines:2];
-    title.text = @"Quiz 测试";
+    title.text = @"Quiz 测验";
     UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
     self.navigationItem.leftBarButtonItem = leftNavButton;
 }
@@ -105,21 +105,14 @@
     [self.scoreTitleView setTextAlignment:NSTextAlignmentCenter];
     [self.scoreTitleView setBackgroundColor:[UIColor clearColor]];
     [self.scoreTitleView setTextColor:[UIColor blackColor]];
-    [self.scoreTitleView setFont:[UIFont systemFontOfSize:20.0]];
+    [self.scoreTitleView setFont:[UIFont boldSystemFontOfSize:20.0]];
     [self.scoreTitleView setText:@"Your Score: "];
     
-    self.scoreContentView = [[UILabel alloc]initWithFrame:CGRectMake(120.0, 0.0, 45.0, 60.0)];
-    [self.scoreContentView setTextAlignment:NSTextAlignmentCenter];
+    self.scoreContentView = [[UILabel alloc]initWithFrame:CGRectMake(120.0, 0.0, 60.0, 60.0)];
+    [self.scoreContentView setTextAlignment:NSTextAlignmentLeft];
     [self.scoreContentView setBackgroundColor:[UIColor clearColor]];
-    if(self.score < 5)
-    {
-        [self.scoreContentView setTextColor:[UIColor redColor]];
-    }
-    else
-    {
-        [self.scoreContentView setTextColor:[UIColor greenColor]];
-    }
-    [self.scoreContentView setFont:[UIFont systemFontOfSize:20.0]];
+    [self.scoreContentView setTextColor:[UIColor blackColor]];
+    [self.scoreContentView setFont:[UIFont boldSystemFontOfSize:20.0]];
     [self.scoreContentView setText:[NSString stringWithFormat:@"%d/10",self.score]];
     
     [self.scoreView addSubview:self.scoreTitleView];
@@ -195,7 +188,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     UILabel* english = nil;
+    UIImageView* specialChinese = nil;
     UILabel* chinese = nil;
+    
+    NSMutableString* englishContent = [[NSMutableString alloc]initWithString:[[self.allQuestionState objectAtIndex:indexPath.row]objectAtIndex:1]];
+    NSMutableString* chineseContent = [[NSMutableString alloc]initWithString:[[self.allQuestionState objectAtIndex:indexPath.row]objectAtIndex:0]];
 
     if (cell == nil)
     {
@@ -204,40 +201,78 @@
         
         english = [[UILabel alloc]init];
         english.tag = 1;
-        
-        chinese = [[UILabel alloc]init];
-        chinese.tag = 2;
-        
         [cell.contentView addSubview:english];
-        [cell.contentView addSubview:chinese];
+        
+        if([chineseContent isEqualToString:@"-"])
+        {
+            specialChinese = [[UIImageView alloc]initWithFrame:CGRectZero];
+            specialChinese.tag = 2;
+            NSMutableString* imageName = [NSMutableString stringWithString:englishContent];
+            [imageName appendString:@".png"];
+            UIImage* image = [UIImage imageNamed:imageName];
+            [specialChinese setImage:image];
+            
+            [cell.contentView addSubview:specialChinese];
+        }
+        else
+        {
+            chinese = [[UILabel alloc]init];
+            chinese.tag = 2;
+            
+            [cell.contentView addSubview:chinese];
+        }
     }
     else
     {
         english = (UILabel*)[cell.contentView viewWithTag:1];
-        chinese = (UILabel*)[cell.contentView viewWithTag:2];
+        
+        if([chineseContent isEqualToString:@"-"])
+        {
+            specialChinese = (UIImageView*)[cell.contentView viewWithTag:2];
+        }
+        else
+        {
+            chinese = (UILabel*)[cell.contentView viewWithTag:2];
+        }
     }
     
-    english.frame = CGRectMake(10.0, 0.0, cell.contentView.frame.size.width / 2, 30.0);
+    english.frame = CGRectMake(10.0, 0.0, cell.contentView.frame.size.width / 2.0, 30.0);
     [english setBackgroundColor:[UIColor clearColor]];
-    english.font = [UIFont boldSystemFontOfSize:12.5];
-    NSMutableString* englishContent = [[NSMutableString alloc]initWithString:[[self.allQuestionState objectAtIndex:indexPath.row]objectAtIndex:1]];
-
+    english.font = [UIFont systemFontOfSize:12.5];
     english.text = englishContent;
-        [english setTextAlignment:NSTextAlignmentLeft];
+    [english setTextAlignment:NSTextAlignmentLeft];
     
     
-    chinese.frame = CGRectMake(cell.contentView.frame.size.width / 2.0, 0.0, cell.contentView.frame.size.width / 2.0 - 10.0, 30.0);
-    [chinese setBackgroundColor:[UIColor clearColor]];
-    chinese.font = [UIFont boldSystemFontOfSize:12.5];
-    NSMutableString* chineseContent = [[NSMutableString alloc]initWithString:[[self.allQuestionState objectAtIndex:indexPath.row]objectAtIndex:0]];
-    
-    chinese.text = chineseContent;
-    [chinese setTextAlignment:NSTextAlignmentRight];
+    if([chineseContent isEqualToString:@"-"])
+    {
+        specialChinese.frame = CGRectMake(cell.contentView.frame.size.width - 22.5, (cell.contentView.frame.size.height - 12.5)/2.0 - 6.0, 12.5, 12.5);
+    }
+    else
+    {
+        chinese.frame = CGRectMake(cell.contentView.frame.size.width / 2.0, 0.0, cell.contentView.frame.size.width / 2.0 - 10.0, 30.0);
+        [chinese setBackgroundColor:[UIColor clearColor]];
+        chinese.font = [UIFont systemFontOfSize:12.5];
+        chinese.text = chineseContent;
+        [chinese setTextAlignment:NSTextAlignmentRight];
+    }
+
     
     if([[[self.allQuestionState objectAtIndex:indexPath.row]objectAtIndex:2]isEqualToString:@"FALSE"])
     {
         [english setTextColor:[UIColor redColor]];
-        [chinese setTextColor:[UIColor redColor]];
+        
+        if([chineseContent isEqualToString:@"-"])
+        {
+            NSMutableString* imageName = [NSMutableString stringWithString:englishContent];
+            [imageName appendString:@"_error.png"];
+            
+            UIImage* image = [UIImage imageNamed:imageName];
+            [specialChinese setImage:image];
+        }
+        else
+        {
+            [chinese setTextColor:[UIColor redColor]];
+        }
     }
     
     return cell;

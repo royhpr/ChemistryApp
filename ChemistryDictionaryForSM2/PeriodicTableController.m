@@ -95,9 +95,10 @@
     NSString* elementAtomicNumber = [NSString stringWithFormat:@"%d",self.elementOrder];
     BOOL isExist = NO;
     
+    
     for(PeriodicTableElementModel* currentElement in self.periodicTableElementList)
     {
-        if([currentElement.atomicNumber isEqualToString:elementAtomicNumber])
+        if([currentElement.atomicNumber isEqualToString:elementAtomicNumber] && [currentElement.atomicNumber intValue] <= 40)
         {
             self.tappedElement = currentElement;
             isExist = YES;
@@ -115,9 +116,9 @@
     }
     else
     {
-        UIAlertView* nonExistMsg = [[UIAlertView alloc] initWithTitle:@"No data found" message:@"There is no relevant data associated with this element, please avoid clicking" delegate:nil cancelButtonTitle:@" " otherButtonTitles:nil];
+        UIAlertView* nonExistMsg = [[UIAlertView alloc] initWithTitle:@"" message:@"Only Atomic Numbers 1 - 40 are available" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [nonExistMsg show];
-        [self performSelector:@selector(dismissCurrentMessage:) withObject:nonExistMsg afterDelay:2.0];
+        [self performSelector:@selector(dismissCurrentMessage:) withObject:nonExistMsg afterDelay:5.0];
     }
 }
 
@@ -154,7 +155,7 @@
         self.elementOrder = 1;
         [self searchTappedElement];
     }
-    else if(self.touchedElementCoordinateX >=5 && self.touchedElementCoordinateX <= 10)
+    else if(self.touchedElementCoordinateX >=5 && self.touchedElementCoordinateX <= 11)
     {
         [self showElementList];
     }
@@ -175,6 +176,10 @@
     {
         self.elementOrder = 2 + self.touchedElementCoordinateX - 10;
         [self searchTappedElement];
+    }
+    else if(self.touchedElementCoordinateX >=5 && self.touchedElementCoordinateX <= 11)
+    {
+        [self showElementList];
     }
     else
     {
@@ -436,13 +441,13 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskLandscapeLeft;
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft];
-    return UIInterfaceOrientationLandscapeLeft;
+    return UIInterfaceOrientationLandscapeRight;
 }
 
 - (void)didReceiveMemoryWarning

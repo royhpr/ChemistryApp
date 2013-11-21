@@ -19,6 +19,8 @@
 
 @interface ElementController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+
 @property id<ElementDelegate> delegate;
 @property(nonatomic,readwrite) NSString* currentTitle;
 @property(nonatomic,readwrite) NSString* elementEnglish;
@@ -28,8 +30,9 @@
 @property(nonatomic,readwrite) NSString* descriptionEnglish;
 @property(nonatomic,readwrite) NSString* descriptionChinese;
 @property(nonatomic,readwrite) NSString* soundName;
+@property(nonatomic,readwrite) NSString* sketchName;
 
 -(void)setViewTitle:(NSString*)title;
--(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName;
+-(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName : (NSString*)imageName;
 
 @end

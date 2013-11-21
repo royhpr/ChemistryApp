@@ -51,6 +51,7 @@
             char *descriptionEnglish = (char *) sqlite3_column_text(statement, 5);
             char *descriptionChinese = (char *) sqlite3_column_text(statement, 6);
             char* sound = (char *)sqlite3_column_text(statement, 7);
+            char* sketch = (char*)sqlite3_column_text(statement, 8);
             NSString *newChapter = [[NSString alloc] initWithUTF8String:chapter];
             NSString *newElementEnglish = [[NSString alloc] initWithUTF8String:elementEnglish];
             NSString* newPhanetic = [[NSString alloc]initWithUTF8String:phanetic];
@@ -59,6 +60,7 @@
             NSString *newDescriptionEnglish = [[NSString alloc] initWithUTF8String:descriptionEnglish];
             NSString *newDescriptionChinese = [[NSString alloc] initWithUTF8String:descriptionChinese];
             NSString* newSound = [[NSString alloc]initWithUTF8String:sound];
+            NSString* newSketch = [[NSString alloc]initWithUTF8String:sketch];
             
             NSCharacterSet* dotCharSet = [NSCharacterSet characterSetWithCharactersInString:@" "];
             
@@ -70,6 +72,7 @@
             newDescriptionEnglish = [[newDescriptionEnglish componentsSeparatedByCharactersInSet:dotCharSet]componentsJoinedByString:@" "];
             newDescriptionChinese = [[newDescriptionChinese componentsSeparatedByCharactersInSet:dotCharSet]componentsJoinedByString:@" "];
             newSound = [[newSound componentsSeparatedByCharactersInSet:dotCharSet]componentsJoinedByString:@" "];
+            newSketch = [[newSketch componentsSeparatedByCharactersInSet:dotCharSet]componentsJoinedByString:@" "];
             
             NSCharacterSet* quoteCharSet = [NSCharacterSet characterSetWithCharactersInString:@"\""];
             
@@ -81,12 +84,12 @@
             newDescriptionEnglish = [[newDescriptionEnglish componentsSeparatedByCharactersInSet:quoteCharSet]componentsJoinedByString:@""];
             newDescriptionChinese = [[newDescriptionChinese componentsSeparatedByCharactersInSet:quoteCharSet]componentsJoinedByString:@""];
             newSound = [[newSound componentsSeparatedByCharactersInSet:quoteCharSet]componentsJoinedByString:@""];
-
-            ElementModel* element = [[ElementModel alloc]initializeWithChapter:newChapter :newElementEnglish :newPhanetic :newElementChinese :newPinyin :newDescriptionEnglish :newDescriptionChinese : newSound];
+            newSketch = [[newSketch componentsSeparatedByCharactersInSet:quoteCharSet]componentsJoinedByString:@""];
+            
+            ElementModel* element = [[ElementModel alloc]initializeWithChapter:newChapter :newElementEnglish :newPhanetic :newElementChinese :newPinyin :newDescriptionEnglish :newDescriptionChinese : newSound : newSketch];
             [currentElementList addObject:element];
         }
         sqlite3_finalize(statement);
-        //sqlite3_close(_prePopulatedDB);
     }
     return currentElementList;
 }

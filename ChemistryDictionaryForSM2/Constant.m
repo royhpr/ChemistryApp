@@ -13,9 +13,9 @@ NSString* TITLE_LOGO = @"mainicon.png";
 NSString* NUS_LOGO = @"nuslogo.png";
 
 //Instruction page
-NSString* ENGLISH_VERSION = @"englishcaption.png";
-NSString* CHINESE_VERSION = @"chinesecaption.png";
-NSString* CONTRIBUTORS = @"cotributor.png";
+NSString* INSTRUCTION_IMAGE = @"instruction.png";
+//NSString* CHINESE_VERSION = @"chinesecaption.png";
+//NSString* CONTRIBUTORS = @"contributors.png";
 
 //Main interface
 NSString* PERIODIC_IMAGE = @"periodtable.png";
@@ -50,6 +50,7 @@ NSString* CHAPTER_15 = @"Chapter 15 Common Classes of Organic Reactions";
 NSString* CHAPTER_16 = @"Chapter 16 Stereochemistry";
 NSString* CHAPTER_17 = @"Chapter 17 Molecules of Life";
 
+//Element
 float ELEMENT_WIDTH = 250.0;
 float ELEMENT_HEIGHT = 60.0;
 float ELEMENT_START_POSITION_X = 15.0;
@@ -61,6 +62,9 @@ NSString* APP_FONT = @"Helvetica Neue";
 float ELEMENT_VIEW_BODY_FONT_SIZE = 14.5;
 float ELEMENT_DESCRIP_WIDTH = 300.0;
 float ELEMENT_DESCRIP_HEIGHT = 200.0;
+
+//Quiz
+NSString* PERIODIC_ELEMENT_INDICATOR = @"P";
 
 
 @implementation Constant

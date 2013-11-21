@@ -14,9 +14,9 @@ extern NSString* NUS_LOGO;
 
 
 //Instruction page
-extern NSString* ENGLISH_VERSION;
-extern NSString* CHINESE_VERSION;
-extern NSString* CONTRIBUTORS;
+extern NSString* INSTRUCTION_IMAGE;
+//extern NSString* CHINESE_VERSION;
+//extern NSString* CONTRIBUTORS;
 
 
 //Main interface
@@ -65,6 +65,9 @@ extern NSString* APP_FONT;
 extern float ELEMENT_VIEW_BODY_FONT_SIZE;
 extern float ELEMENT_DESCRIP_WIDTH;
 extern float ELEMENT_DESCRIP_HEIGHT;
+
+//Quiz
+extern NSString* PERIODIC_ELEMENT_INDICATOR;
 
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)

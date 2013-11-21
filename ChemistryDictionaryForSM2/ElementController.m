@@ -17,9 +17,6 @@
 @property(strong,nonatomic) UIImageView* sound;
 @property(strong,nonatomic) UILabel* elementDescription;
 
-@property(nonatomic,readwrite)CGPoint ViewOrigin;
-@property(nonatomic,readwrite)CGSize ViewSize;
-
 @end
 
 @implementation ElementController
@@ -34,7 +31,7 @@
     return self;
 }
 
--(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName
+-(void)setElementDetails:(NSString*)newElementEnglish : (NSString*)newElementChinese : (NSString*)newPhanetic : (NSString*)newPinyin : (NSString*)newDescriptionEnglish : (NSString*)newDescriptionChinese : (NSString*)newSoundName : (NSString*)imageName
 {
     _elementEnglish = newElementEnglish;
     _elementChinese = newElementChinese;
@@ -43,6 +40,7 @@
     _descriptionEnglish = newDescriptionEnglish;
     _descriptionChinese = newDescriptionChinese;
     _soundName = newSoundName;
+    _sketchName = imageName;
 }
 
 -(void)setViewTitle:(NSString*)title
@@ -89,14 +87,15 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self configureInterfaceView];
+    self.mainScrollView.userInteractionEnabled = YES;
+    self.mainScrollView.scrollEnabled = YES;
     [self initializeViewComponents];
 }
 
 - (void)initializeViewTitle
 {
     //initialize title
-    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
     title.font = [UIFont boldSystemFontOfSize:13.0];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor whiteColor];
@@ -110,7 +109,7 @@
 - (void)initializeChinese
 {
     //initialize body
-    self.elementInChinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.ViewOrigin.y + ELEMENT_START_POSITION_Y, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
+    self.elementInChinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.mainScrollView.frame.origin.y + ELEMENT_START_POSITION_Y, ELEMENT_WIDTH, ELEMENT_HEIGHT)];
     NSMutableString* chineseLabelText = [[NSMutableString alloc]initWithString:self.elementChinese];
     self.elementInChinese.text = chineseLabelText;
     self.elementInChinese.font = [UIFont boldSystemFontOfSize:18.0];
@@ -167,11 +166,11 @@
 - (void)initializeSoundImage
 {
     UIImage* image = [UIImage imageNamed:@"audiobutton.jpg"];
-    self.sound = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.ViewOrigin.y + ELEMENT_START_POSITION_Y + self.elementInChinese.frame.size.height + ELEMENT_COMPONENT_GAP, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
+    self.sound = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.mainScrollView.frame.origin.y + ELEMENT_START_POSITION_Y + self.elementInChinese.frame.size.height + ELEMENT_COMPONENT_GAP, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
     [self.sound setImage:image];
     self.sound.userInteractionEnabled = YES;
     
-    self.sound.frame = CGRectMake(self.view.frame.size.width - self.sound.frame.size.width - ELEMENT_START_POSITION_X,  self.ViewOrigin.y + ELEMENT_START_POSITION_Y, self.sound.frame.size.width, self.sound.frame.size.height);
+    self.sound.frame = CGRectMake(self.view.frame.size.width - self.sound.frame.size.width - ELEMENT_START_POSITION_X,  self.mainScrollView.frame.origin.y + ELEMENT_START_POSITION_Y, self.sound.frame.size.width, self.sound.frame.size.height);
     
     UITapGestureRecognizer* tapToPlaySound = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playSound)];
     tapToPlaySound.numberOfTapsRequired = 1;
@@ -182,12 +181,12 @@
 
 -(void)playSound
 {
-//    CFBundleRef mainBundle = CFBundleGetMainBundle();
-//    CFURLRef soundFileURL;
-//    soundFileURL = CFBundleCopyResourceURL(mainBundle, (CFStringRef)@"", CFSTR("mp3"), NULL);
-//    UInt32 soundID;
-//    AudioServicesCreateSystemSoundID(soundFileURL, &soundID);
-//    AudioServicesPlaySystemSound(soundID);
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef soundFileURL;
+    soundFileURL = CFBundleCopyResourceURL(mainBundle, (__bridge CFStringRef)self.soundName, CFSTR("mp3"), NULL);
+    UInt32 soundID;
+    AudioServicesCreateSystemSoundID(soundFileURL, &soundID);
+    AudioServicesPlaySystemSound(soundID);
 }
 
 - (void)initializeDescription
@@ -205,26 +204,45 @@
     [self.elementDescription sizeToFit];
 }
 
+-(void)initializeSketch
+{
+    if(![self.sketchName isEqualToString:@"-"])
+    {
+        NSMutableString* imageName = [NSMutableString stringWithString:self.sketchName];
+        [imageName appendString:@".tiff"];
+        UIImage* image = [UIImage imageNamed:imageName];
+        float imageWidth = image.size.width / 2.75;
+        float imageHeight = image.size.height / 2.75;
+        
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementDescription.frame.origin.y+self.elementDescription.frame.size.height + ELEMENT_COMPONENT_GAP, imageWidth, imageHeight)];
+        [imageView setImage:image];
+        
+        [[self mainScrollView]addSubview:imageView];
+        self.mainScrollView.contentSize = CGSizeMake(self.mainScrollView.frame.size.width, imageView.frame.origin.y + imageView.frame.size.height);
+    }
+}
+
 -(void)initializeViewComponents
 {
     [self initializeChinese];
+    [[self mainScrollView]addSubview:self.elementInChinese];
     
     [self initializeSoundImage];
+    [[self mainScrollView]addSubview:self.sound];
     
     [self initializePinying];
+    [[self mainScrollView]addSubview:self.elementPinying];
     
     [self initializeEnglish];
+    [[self mainScrollView]addSubview:self.elementInEnglish];
     
     [self initializePhanetic];
+    [[self mainScrollView]addSubview:self.elementPhanetic];
     
     [self initializeDescription];
+    [[self mainScrollView]addSubview:self.elementDescription];
     
-    [[self view]addSubview:self.elementInChinese];
-    [[self view]addSubview:self.sound];
-    [[self view]addSubview:self.elementPinying];
-    [[self view]addSubview:self.elementInEnglish];
-    [[self view]addSubview:self.elementPhanetic];
-    [[self view]addSubview:self.elementDescription];
+    [self initializeSketch];
 }
 
 -(void)goBackToChapter
@@ -235,22 +253,6 @@
 -(void)goBackToMain
 {
     [_delegate returnToMainInterface];
-}
-
-- (void)configureInterfaceView
-{
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-    {
-        self.ViewOrigin = CGPointMake(0.0, self.view.frame.origin.y + self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height);
-        
-        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
-    }
-    else
-    {
-        self.ViewOrigin = self.view.frame.origin;
-        
-        self.ViewSize = self.view.frame.size;
-    }
 }
 
 - (void)didReceiveMemoryWarning

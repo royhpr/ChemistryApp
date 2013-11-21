@@ -87,46 +87,9 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    self.currentScrollView.frame = self.view.frame;
-    self.currentListWebView.frame = CGRectMake(-self.view.frame.size.width/2,0,self.view.frame.size.width*2.0,self.view.frame.size.height);
-    self.currentScrollView.contentSize = self.currentListWebView.frame.size;
-    
-    self.currentScrollView.userInteractionEnabled = YES;
-    self.currentListWebView.userInteractionEnabled = YES;
-    
     [self.currentListWebView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"periodic_table_element" ofType:@"html"]isDirectory:NO]]];
     self.currentListWebView.scalesPageToFit = NO;
-    
-    //gesture
-//    self.currentScrollView.contentSize = self.currentScrollView.frame.size;
-//    UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:nil];
-//    
-//    UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOut:)];
-//    [doubleTapRecognizer setNumberOfTapsRequired:2];
-//    [doubleTapRecognizer setNumberOfTouchesRequired:2];
-//    
-//    CGRect scrollViewFrame = self.currentScrollView.frame;
-//    CGFloat scaleWidth = scrollViewFrame.size.width / self.currentScrollView.contentSize.width;
-//    CGFloat scaleHeight = scrollViewFrame.size.height / self.currentScrollView.contentSize.height;
-//    CGFloat minScale = MIN(scaleWidth, scaleHeight);
-//    self.currentScrollView.minimumZoomScale = minScale;
-//    self.currentScrollView.maximumZoomScale = 2.0f;
-//    self.currentScrollView.zoomScale = 1.8f;
-//    
-//    [self.currentScrollView addGestureRecognizer:pinchRecognizer];
-//    [self.currentScrollView addGestureRecognizer:doubleTapRecognizer];
 }
-
--(void)zoomOut
-{
-    self.currentScrollView.zoomScale = 1.0;
-}
-
-- (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return self.currentListWebView;
-}
-
 
 //All about interface orientation
 - (BOOL)shouldAutorotate
@@ -153,8 +116,6 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
-
-
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {

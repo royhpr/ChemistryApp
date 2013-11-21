@@ -84,7 +84,7 @@
     title.textColor = [UIColor whiteColor];
     [title setLineBreakMode:NSLineBreakByWordWrapping];
     [title setNumberOfLines:2];
-    title.text = @"Quiz 测试";
+    title.text = @"Quiz 测验";
     UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
     self.navigationItem.leftBarButtonItem = leftNavButton;
 }
@@ -199,9 +199,10 @@
         
         for(PeriodicTableElementModel* currentElement in self.periodicTableDatabase)
         {
-            NSArray* currentObject = [NSArray arrayWithObjects:currentElement.chinese, currentElement.english, nil];
-            [self.sourceQuestionAnswer addObject:currentObject];
-            [self.sourceAnswer addObject:currentElement.english];
+            [self.sourceAnswer addObject:[NSMutableArray arrayWithObjects:PERIODIC_ELEMENT_INDICATOR, currentElement.english, nil]];
+            
+                NSArray* currentObject = [NSArray arrayWithObjects: PERIODIC_ELEMENT_INDICATOR, currentElement.chinese, currentElement.english, nil];
+                [self.sourceQuestionAnswer addObject:currentObject];
         }
     }
     if(self.syllabusIndicator.on)
@@ -219,9 +220,9 @@
         {
             if([selectedChapterArray containsObject:currentElement.chapter])
             {
-                NSArray* currentObject = [NSArray arrayWithObjects:currentElement.elementChinese,currentElement.elementEnglish, nil];
+                NSArray* currentObject = [NSArray arrayWithObjects:currentElement.chapter,currentElement.elementChinese,currentElement.elementEnglish, nil];
                 [self.sourceQuestionAnswer addObject:currentObject];
-                [self.sourceAnswer addObject:currentElement.elementEnglish];
+                [self.sourceAnswer addObject:[NSMutableArray arrayWithObjects:currentElement.chapter, currentElement.elementEnglish, nil]];
             }
         }
     }
@@ -231,7 +232,7 @@
     }
     else
     {
-        UIAlertView* nonExistMsg = [[UIAlertView alloc] initWithTitle:@"No Selection" message:@"Please select at lease one field before proceeding" delegate:nil cancelButtonTitle:@" " otherButtonTitles:nil];
+        UIAlertView* nonExistMsg = [[UIAlertView alloc] initWithTitle:@"" message:@"Please select proper quiz scope" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [nonExistMsg show];
         [self performSelector:@selector(dismissCurrentMessage:) withObject:nonExistMsg afterDelay:2.0];
     }
@@ -256,7 +257,7 @@
         {
             id possibleObject = [self.sourceQuestionAnswer objectAtIndex: arc4random() % [self.sourceQuestionAnswer count]];
             
-            if ( ! [possibleQA containsObject: possibleObject] )
+            if (![possibleQA containsObject: possibleObject])
             {
                 [possibleQA addObject: possibleObject];
                 remainingQA --;
@@ -268,18 +269,18 @@
     {
         //Pick other three possible answers
         NSMutableArray* possibleAns = [[NSMutableArray alloc] init];
-        [possibleAns addObject:[currentQuestion objectAtIndex:1]];
+        [possibleAns addObject:[currentQuestion objectAtIndex:2]];
         int remainingA = 3;
         
-        if ( [self.sourceAnswer count] >= remainingA )
+        if ([self.sourceAnswer count] >= remainingA)
         {
             while (remainingA > 0)
             {
                 id possibleObject = [self.sourceAnswer objectAtIndex: arc4random() % [self.sourceAnswer count]];
                 
-                if ( ! [possibleAns containsObject: possibleObject] )
+                if (![possibleAns containsObject:[possibleObject objectAtIndex:1]])
                 {
-                    [possibleAns addObject: possibleObject];
+                    [possibleAns addObject: [possibleObject objectAtIndex:1]];
                     remainingA --;
                 }
             }
@@ -294,8 +295,8 @@
         
         //Form one question
         NSMutableArray* question = [[NSMutableArray alloc]init];
-        [question addObject:[currentQuestion objectAtIndex:0]];
         [question addObject:[currentQuestion objectAtIndex:1]];
+        [question addObject:[currentQuestion objectAtIndex:2]];
         
         for(NSString* currentAns in possibleAns)
         {

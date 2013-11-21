@@ -43,14 +43,16 @@
     UIBarButtonItem* homeButton = [[UIBarButtonItem alloc]initWithCustomView:homeView];
     self.navigationItem.rightBarButtonItem = homeButton;
     
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20.0f]}].width, 44.0);
-    UILabel* label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont boldSystemFontOfSize:20.0];
-    label.textAlignment = NSTextAlignmentCenter;
-    self.navigationItem.titleView = label;
-    label.text = @"Syllabus 教学大纲";
+    //set up left item
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 220, 40)];
+    title.font = [UIFont boldSystemFontOfSize:20.0];
+    title.backgroundColor = [UIColor clearColor];
+    title.textColor = [UIColor whiteColor];
+    [title setLineBreakMode:NSLineBreakByWordWrapping];
+    [title setNumberOfLines:2];
+    title.text = @"Syllabus 教学大纲";
+    UIBarButtonItem* leftNavButton = [[UIBarButtonItem alloc]initWithCustomView:title];
+    self.navigationItem.leftBarButtonItem = leftNavButton;
     
     [self initializeChapterList];
 }
@@ -137,6 +139,7 @@
     content.frame = CGRectMake(contentOrigin, 0.0, cell.contentView.frame.size.width - contentOrigin, 30.0);
     NSMutableString* contentString = [[NSMutableString alloc]initWithString:(NSString*)[self.chapterArray objectAtIndex:indexPath.item]];
     content.text = contentString;
+    [content setTextColor:[UIColor blueColor]];
     [content setBackgroundColor:[UIColor clearColor]];
     content.font = [UIFont boldSystemFontOfSize:12.5];
     content.numberOfLines = 0;

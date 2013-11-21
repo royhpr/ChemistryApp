@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bPo-aR-ugA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="bPo-aR-ugA">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
         <!--Instruction Controller-->
         <scene sceneID="NAJ-2b-tKo">
             <objects>
                 <viewController id="ePD-OD-N4h" customClass="InstructionController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="r5U-3t-G3S"/>
-                        <viewControllerLayoutGuide type="bottom" id="QMg-0t-sPL"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7Gd-8Z-QU1" userLabel="View" customClass="ss">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -35,10 +31,6 @@
         <scene sceneID="5">
             <objects>
                 <viewController storyboardIdentifier="MainViewController" id="2" customClass="ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xak-iv-dRg"/>
-                        <viewControllerLayoutGuide type="bottom" id="Jh8-st-8Sp"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -63,15 +55,11 @@
         <scene sceneID="t3a-qq-LbB">
             <objects>
                 <viewController storyboardIdentifier="PeriodicTable" title="PeriodicTable" id="Va0-YB-I4S" customClass="PeriodicTableController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="iqO-GV-8ra"/>
-                        <viewControllerLayoutGuide type="bottom" id="UQG-Fr-GmD"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jGZ-FV-8Ir">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JsQ-jc-9ug">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="JsQ-jc-9ug">
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
@@ -99,47 +87,20 @@
         <scene sceneID="gPp-mc-VdY">
             <objects>
                 <viewController storyboardIdentifier="ElementListWebView" id="eE3-or-yBK" customClass="ElementListController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pqa-ll-bZb"/>
-                        <viewControllerLayoutGuide type="bottom" id="CFj-NR-NQW"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wM2-F8-9jw">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGr-nj-hj8">
+                            <webView contentMode="scaleToFill" id="LHY-YF-eX3">
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LHY-YF-eX3">
-                                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="eE3-or-yBK" id="5ZX-10-Tnf"/>
-                                        </connections>
-                                    </webView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="LHY-YF-eX3" firstAttribute="centerX" secondItem="aGr-nj-hj8" secondAttribute="centerX" id="8vF-T8-TYp"/>
-                                    <constraint firstAttribute="trailing" secondItem="LHY-YF-eX3" secondAttribute="trailing" id="Q2u-Nj-4F5"/>
-                                    <constraint firstAttribute="bottom" secondItem="LHY-YF-eX3" secondAttribute="bottom" id="Syx-MR-iPL"/>
-                                    <constraint firstItem="LHY-YF-eX3" firstAttribute="centerY" secondItem="aGr-nj-hj8" secondAttribute="centerY" id="TNp-W4-cAL"/>
-                                    <constraint firstItem="LHY-YF-eX3" firstAttribute="top" secondItem="aGr-nj-hj8" secondAttribute="top" id="Uce-oj-G0o"/>
-                                    <constraint firstItem="LHY-YF-eX3" firstAttribute="leading" secondItem="aGr-nj-hj8" secondAttribute="leading" id="dWN-zF-quU"/>
-                                </constraints>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="delegate" destination="eE3-or-yBK" id="RFt-rE-VL6"/>
+                                    <outlet property="delegate" destination="eE3-or-yBK" id="5ZX-10-Tnf"/>
                                 </connections>
-                            </scrollView>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="aGr-nj-hj8" firstAttribute="top" secondItem="wM2-F8-9jw" secondAttribute="top" id="Pmd-OF-C1K"/>
-                            <constraint firstAttribute="bottom" secondItem="aGr-nj-hj8" secondAttribute="bottom" id="bfm-Bf-nXU"/>
-                            <constraint firstAttribute="trailing" secondItem="aGr-nj-hj8" secondAttribute="trailing" id="qhv-uB-M46"/>
-                            <constraint firstItem="aGr-nj-hj8" firstAttribute="leading" secondItem="wM2-F8-9jw" secondAttribute="leading" id="sDJ-av-lve"/>
-                        </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="CYD-Uk-Dtq"/>
@@ -149,7 +110,6 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="currentListWebView" destination="LHY-YF-eX3" id="Qom-zP-fca"/>
-                        <outlet property="currentScrollView" destination="aGr-nj-hj8" id="6ye-fZ-YiL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0P9-Xb-1Hf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -160,13 +120,15 @@
         <scene sceneID="cp4-NC-eGr">
             <objects>
                 <viewController storyboardIdentifier="PeriodicTableElement" id="GOL-gl-rAH" customClass="PeriodicTableElementController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="M03-Kg-mjX"/>
-                        <viewControllerLayoutGuide type="bottom" id="pS7-Jr-Cmc"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zgY-UZ-V77" customClass="Pe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="mtF-mq-DQY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Eec-iB-KOC"/>
@@ -174,6 +136,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <outlet property="mainScrollView" destination="mtF-mq-DQY" id="Ffd-xA-8e1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NKD-jb-AoC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -183,10 +148,6 @@
         <scene sceneID="Arq-7Y-OJJ">
             <objects>
                 <viewController id="Pej-dp-C1P" customClass="FrontPageController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="8DT-Gb-gaK"/>
-                        <viewControllerLayoutGuide type="bottom" id="iD6-Vy-f90"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="djj-mA-35S">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -209,13 +170,15 @@
         <scene sceneID="rc2-Gh-xw2">
             <objects>
                 <viewController id="Oe7-1S-fws" customClass="ElementController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="WsK-Zy-6Sa"/>
-                        <viewControllerLayoutGuide type="bottom" id="OIb-cU-JkT"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lr7-is-XdM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="hBC-he-1ng">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="bh8-uT-hm3"/>
@@ -223,6 +186,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <outlet property="mainScrollView" destination="hBC-he-1ng" id="OKt-Ef-GeQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L3g-f9-5XN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -365,10 +331,6 @@
         <scene sceneID="Gz3-Yl-dqb">
             <objects>
                 <viewController id="ymL-Qk-6b8" customClass="QuizController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xv6-Ec-NDl"/>
-                        <viewControllerLayoutGuide type="bottom" id="rPN-pJ-Sfo"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WLA-ek-ucB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -388,10 +350,6 @@
         <scene sceneID="wOQ-xl-F8M">
             <objects>
                 <viewController storyboardIdentifier="QuizQuestion" id="Gc0-z4-NMu" customClass="QuizQuestionController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jBO-Rc-XY9"/>
-                        <viewControllerLayoutGuide type="bottom" id="lgU-eF-gtP"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4SD-QT-KcW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -410,10 +368,6 @@
         <scene sceneID="Ap0-2X-OCk">
             <objects>
                 <viewController storyboardIdentifier="Summary" id="ilg-pO-lVj" customClass="SummaryController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LFc-1b-fbR"/>
-                        <viewControllerLayoutGuide type="bottom" id="Nxa-kE-FJi"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6Aw-Y2-7mZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

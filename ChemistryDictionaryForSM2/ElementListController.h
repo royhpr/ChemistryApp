@@ -11,8 +11,7 @@
 #import "PeriodicTableController.h"
 #import "ViewController.h"
 
-@interface ElementListController : UIViewController<UIScrollViewDelegate>
+@interface ElementListController : UIViewController
 @property (weak, nonatomic) IBOutlet UIWebView *currentListWebView;
-@property (weak, nonatomic) IBOutlet UIScrollView *currentScrollView;
 
 @end

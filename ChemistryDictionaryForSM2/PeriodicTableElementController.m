@@ -22,11 +22,6 @@
 @property(nonatomic,strong)UILabel* chemicalPropertyBody;
 @property(nonatomic,strong)UIImageView* elementImage;
 
-@property(nonatomic,strong)UIScrollView* mainScrollView;
-
-@property(nonatomic,readwrite)CGPoint ViewOrigin;
-@property(nonatomic,readwrite)CGSize ViewSize;
-
 @end
 
 @implementation PeriodicTableElementController
@@ -104,7 +99,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self configureInterfaceView];
     [self initializeScrollView];
     [self initializeSubViews];
 }
@@ -121,7 +115,6 @@
 
 -(void)initializeScrollView
 {
-    self.mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height)];
     self.mainScrollView.userInteractionEnabled = YES;
     
     [self.view addSubview:self.mainScrollView];
@@ -129,7 +122,7 @@
 
 - (void)initializeChineseLabel
 {
-    self.chinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.ViewOrigin.y + ELEMENT_START_POSITION_Y, 50.0, 50.0)];
+    self.chinese = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.mainScrollView.frame.origin.y + ELEMENT_START_POSITION_Y, 50.0, 50.0)];
     self.chinese.text = self.element.chinese;
     self.chinese.font = [UIFont boldSystemFontOfSize:20.0];
     self.chinese.numberOfLines = 0;
@@ -142,7 +135,7 @@
 - (void)initializeSoundImage
 {
     UIImage* image = [UIImage imageNamed:@"audiobutton.jpg"];
-    self.sound = [[UIImageView alloc]initWithFrame:CGRectMake(self.chinese.frame.origin.x + self.chinese.frame.size.width + 40.0, self.ViewOrigin.y + ELEMENT_START_POSITION_Y, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
+    self.sound = [[UIImageView alloc]initWithFrame:CGRectMake(self.chinese.frame.origin.x + self.chinese.frame.size.width + 40.0, self.mainScrollView.frame.origin.y + ELEMENT_START_POSITION_Y, image.size.width/SCALE_DOWN_FACTOR, image.size.height/SCALE_DOWN_FACTOR)];
     [self.sound setImage:image];
     
     self.sound.frame = CGRectMake(self.view.frame.size.width - ELEMENT_START_POSITION_X - self.sound.frame.size.width, self.sound.frame.origin.y, self.sound.frame.size.width, self.sound.frame.size.height);
@@ -368,22 +361,6 @@
     CustomNavigationController *newNavigtionController = [[CustomNavigationController alloc] initWithRootViewController:portraitViewController];
     
     [self.navigationController presentViewController:newNavigtionController animated:NO completion:NULL];
-}
-
-- (void)configureInterfaceView
-{
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-    {
-        self.ViewOrigin = CGPointMake(0.0, self.view.frame.origin.y + self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height);
-        
-        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
-    }
-    else
-    {
-        self.ViewOrigin = self.view.frame.origin;
-        
-        self.ViewSize = self.view.frame.size;
-    }
 }
 
 - (BOOL)shouldAutorotate
