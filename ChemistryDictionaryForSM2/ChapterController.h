@@ -19,7 +19,7 @@
 
 @end
 
-@interface ChapterController : UITableViewController<ElementDelegate>
+@interface ChapterController : UIViewController<ElementDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, readwrite)int chapterNumber;
 @property(nonatomic, readwrite)NSString* currentTitle;
@@ -30,6 +30,8 @@
 
 @property id<ChapterDelegate> delegate;
 
+@property (weak, nonatomic) IBOutlet UISearchBar *elementSearchBar;
+@property (weak, nonatomic) IBOutlet UITableView *elementListTableView;
 -(void)setChapterNumber: (int)currentChapterNumber;
 
 @end

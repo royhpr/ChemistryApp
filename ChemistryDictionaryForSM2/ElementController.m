@@ -95,7 +95,7 @@
 - (void)initializeViewTitle
 {
     //initialize title
-    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
+    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200.0, 40.0)];
     title.font = [UIFont boldSystemFontOfSize:13.0];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor whiteColor];
@@ -133,6 +133,10 @@
     {
         self.elementInChinese.frame = CGRectMake(self.elementInChinese.frame.origin.x + ((self.elementPinying.frame.size.width - self.elementInChinese.frame.size.width)/2), self.elementInChinese.frame.origin.y,self.elementInChinese.frame.size.width,self.elementInChinese.frame.size.height);
     }
+    else
+    {
+        self.elementPinying.frame = CGRectMake(self.elementPinying.frame.origin.x+((self.elementInChinese.frame.size.width-self.elementPinying.frame.size.width)/2.0), self.elementPinying.frame.origin.y, self.elementPinying.frame.size.width, self.elementPinying.frame.size.height);
+    }
 }
 
 - (void)initializeEnglish
@@ -157,9 +161,17 @@
     [self.elementPhanetic setTextAlignment:NSTextAlignmentCenter];
     [self.elementPhanetic sizeToFit];
     
+    CGRect frame = self.elementPhanetic.frame;
+    frame.size.height = ELEMENT_HEIGHT;
+    self.elementPhanetic.frame = frame;
+    
     if(self.elementInEnglish.frame.size.width > self.elementPhanetic.frame.size.width)
     {
-        self.elementPhanetic.frame = CGRectMake(self.elementPhanetic.frame.origin.x + ((self.elementInEnglish.frame.size.width - self.elementPhanetic.frame.size.width)/2), self.elementPhanetic.frame.origin.y, self.elementPhanetic.frame.size.width, self.elementPhanetic.frame.size.height);
+        self.elementPhanetic.frame = CGRectMake(self.elementPhanetic.frame.origin.x + ((self.elementInEnglish.frame.size.width - self.elementPhanetic.frame.size.width)/2.0), self.elementPhanetic.frame.origin.y, self.elementPhanetic.frame.size.width, self.elementPhanetic.frame.size.height);
+    }
+    else
+    {
+        self.elementInEnglish.frame = CGRectMake(self.elementInEnglish.frame.origin.x + (self.elementPhanetic.frame.size.width - self.elementInEnglish.frame.size.width)/2.0, self.elementInEnglish.frame.origin.y, self.elementInEnglish.frame.size.width, self.elementInEnglish.frame.size.height);
     }
 }
 
@@ -214,11 +226,15 @@
         float imageWidth = image.size.width / 2.75;
         float imageHeight = image.size.height / 2.75;
         
-        UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.elementDescription.frame.origin.y+self.elementDescription.frame.size.height + ELEMENT_COMPONENT_GAP, imageWidth, imageHeight)];
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake((self.mainScrollView.frame.size.width - imageWidth)/2.0, self.elementDescription.frame.origin.y+self.elementDescription.frame.size.height + ELEMENT_COMPONENT_GAP, imageWidth, imageHeight)];
         [imageView setImage:image];
         
         [[self mainScrollView]addSubview:imageView];
-        self.mainScrollView.contentSize = CGSizeMake(self.mainScrollView.frame.size.width, imageView.frame.origin.y + imageView.frame.size.height);
+        self.mainScrollView.contentSize = CGSizeMake(self.mainScrollView.frame.size.width, imageView.frame.origin.y + imageView.frame.size.height + 5.0);
+    }
+    else
+    {
+        self.mainScrollView.contentSize = CGSizeMake(self.mainScrollView.frame.size.width, self.elementDescription.frame.origin.y + self.elementDescription.frame.size.height + 5.0);
     }
 }
 

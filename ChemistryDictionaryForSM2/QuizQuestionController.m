@@ -157,12 +157,13 @@
 
 -(void)initializeScoreView
 {
-    self.scoreView = [[UILabel alloc]initWithFrame:CGRectMake(self.ViewSize.width - 150.0, self.ViewOrigin.y, 150.0, 40.0)];
-    [self.scoreView setTextAlignment:NSTextAlignmentCenter];
-    [self.scoreView setBackgroundColor:[UIColor colorWithRed:98.0/255.0 green:153.0/255.0 blue:224.0/255.0 alpha:1]];
+    self.scoreView = [[UILabel alloc]initWithFrame:CGRectMake(self.ViewSize.width - 150.0 - (self.view.frame.size.width - 300.0)/2, self.ViewOrigin.y, 150.0, 40.0)];
+    [self.scoreView setTextAlignment:NSTextAlignmentRight];
+    //[self.scoreView setBackgroundColor:[UIColor colorWithRed:98.0/255.0 green:153.0/255.0 blue:224.0/255.0 alpha:1]];
+    [self.scoreView setBackgroundColor:[UIColor clearColor]];
     [self.scoreView setTextColor:[UIColor blackColor]];
-    [self.scoreView setFont:[UIFont systemFontOfSize:16.0]];
-    self.scoreView.layer.cornerRadius = 5.0;
+    [self.scoreView setFont:[UIFont systemFontOfSize:20.0]];
+    //self.scoreView.layer.cornerRadius = 5.0;
     [self.scoreView setText:[NSString stringWithFormat:@"Score: %d / 10",(int)self.score]];
     
     [self.view addSubview:self.scoreView];

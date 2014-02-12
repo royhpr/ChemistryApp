@@ -27,6 +27,7 @@ extern NSString* QUIZ_IMAGE;
 
 extern float TITLE_WIDTH;
 extern float TITLE_HEIGHT;
+extern float ELEMENT_DESCRIP_WIDTH_PERIODIC;
 
 extern NSString* PERIODIC_LABEL;
 extern NSString* SYLLABUS_LABEL;

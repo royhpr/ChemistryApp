@@ -37,16 +37,14 @@
 
 -(void)setElementParameters:(PeriodicTableElementModel*)currentElement
 {
-
     self.element = currentElement;
-
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-    self.navigationItem.hidesBackButton = YES;
+    //self.navigationItem.hidesBackButton = YES;
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
     {
@@ -81,7 +79,7 @@
     //add to view items
     [rightItems addSubview:backView];
     [rightItems addSubview:homeView];
-    
+
     UIBarButtonItem* navButton = [[UIBarButtonItem alloc]initWithCustomView:rightItems];
     self.navigationItem.rightBarButtonItem = navButton;
     
@@ -162,6 +160,10 @@
     {
         self.chinese.frame = CGRectMake(self.chinese.frame.origin.x + ((self.pinyin.frame.size.width - self.chinese.frame.size.width)/2), self.chinese.frame.origin.y, self.chinese.frame.size.width, self.chinese.frame.size.height);
     }
+    else
+    {
+        self.pinyin.frame = CGRectMake(self.pinyin.frame.origin.x + ((self.chinese.frame.size.width - self.pinyin.frame.size.width)/2.0), self.pinyin.frame.origin.y, self.pinyin.frame.size.width, self.pinyin.frame.size.height);
+    }
     
     [self.mainScrollView addSubview:self.pinyin];
 }
@@ -196,7 +198,7 @@
 
 - (void)initializeDescription
 {
-    self.description = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.phanetic.frame.size.height + self.phanetic.frame.origin.y + 10.0, ELEMENT_DESCRIP_WIDTH, ELEMENT_DESCRIP_HEIGHT)];
+    self.description = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.phanetic.frame.size.height + self.phanetic.frame.origin.y + 10.0, ELEMENT_DESCRIP_WIDTH_PERIODIC, ELEMENT_DESCRIP_HEIGHT)];
     NSMutableString* description = [NSMutableString stringWithString:@"Atomic Number/原子序数: "];
     [description appendString:self.element.atomicNumber];
     [description appendString:NEW_LINE];
@@ -220,7 +222,7 @@
 
 - (void)initializePhysicalPropertyTitle
 {
-    self.physicalPropertyTitle = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.description.frame.origin.y + self.description.frame.size.height, 300.0, 30.0)];
+    self.physicalPropertyTitle = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.description.frame.origin.y + self.description.frame.size.height, ELEMENT_DESCRIP_WIDTH_PERIODIC, 30.0)];
     self.physicalPropertyTitle.text = @"Physical Properties/物理性质";
     self.physicalPropertyTitle.font = [UIFont boldSystemFontOfSize:16.0];
     self.physicalPropertyTitle.numberOfLines = 0;
@@ -231,7 +233,7 @@
 
 - (void)initializePhysicalPropertyBody
 {
-    self.physicalPropertyBody = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.physicalPropertyTitle.frame.size.height + self.physicalPropertyTitle.frame.origin.y, ELEMENT_DESCRIP_WIDTH, ELEMENT_DESCRIP_HEIGHT)];
+    self.physicalPropertyBody = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.physicalPropertyTitle.frame.size.height + self.physicalPropertyTitle.frame.origin.y, ELEMENT_DESCRIP_WIDTH_PERIODIC, ELEMENT_DESCRIP_HEIGHT)];
     NSMutableString* descriptionPara2 = [NSMutableString stringWithString:@"Melting Point/熔点: "];
     [descriptionPara2 appendString:self.element.mp];
     [descriptionPara2 appendString:@" ℃"];
@@ -271,7 +273,7 @@
 
 -(void)initializeChemicalPropertyTitle
 {
-    self.chemicalPropertyTitle = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.physicalPropertyBody.frame.origin.y + self.physicalPropertyBody.frame.size.height, 300.0, 30.0)];
+    self.chemicalPropertyTitle = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.physicalPropertyBody.frame.origin.y + self.physicalPropertyBody.frame.size.height, ELEMENT_DESCRIP_WIDTH_PERIODIC, 30.0)];
     self.chemicalPropertyTitle.text = @"Chemical Properties/化学性质";
     self.chemicalPropertyTitle.font = [UIFont boldSystemFontOfSize:16.0];
     self.chemicalPropertyTitle.numberOfLines = 0;
@@ -282,7 +284,7 @@
 
 - (void)initializeChemicalPropertyBody
 {
-    self.chemicalPropertyBody = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.chemicalPropertyTitle.frame.size.height + self.chemicalPropertyTitle.frame.origin.y, ELEMENT_DESCRIP_WIDTH, ELEMENT_DESCRIP_HEIGHT)];
+    self.chemicalPropertyBody = [[UILabel alloc]initWithFrame:CGRectMake(ELEMENT_START_POSITION_X, self.chemicalPropertyTitle.frame.size.height + self.chemicalPropertyTitle.frame.origin.y, ELEMENT_DESCRIP_WIDTH_PERIODIC, ELEMENT_DESCRIP_HEIGHT)];
     NSMutableString* description = [NSMutableString stringWithString:@"Oxidation State/氧化态: "];
     [description appendString:self.element.oxidationState];
     [description appendString:NEW_LINE];
@@ -357,11 +359,9 @@
 
 -(void)goBackToTable
 {
-    PeriodicTableElementController *portraitViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PeriodicTable"];
-    CustomNavigationController *newNavigtionController = [[CustomNavigationController alloc] initWithRootViewController:portraitViewController];
-    
-    [self.navigationController presentViewController:newNavigtionController animated:NO completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 
 - (BOOL)shouldAutorotate
 {
@@ -370,12 +370,12 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return UIInterfaceOrientationPortrait;
+    return UIInterfaceOrientationLandscapeRight;
 }
 
 - (void)didReceiveMemoryWarning

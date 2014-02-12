@@ -278,7 +278,7 @@
             {
                 id possibleObject = [self.sourceAnswer objectAtIndex: arc4random() % [self.sourceAnswer count]];
                 
-                if (![possibleAns containsObject:[possibleObject objectAtIndex:1]])
+                if (![possibleAns containsObject:[possibleObject objectAtIndex:1]] && [[currentQuestion objectAtIndex:0]isEqualToString:[possibleObject objectAtIndex:0]])
                 {
                     [possibleAns addObject: [possibleObject objectAtIndex:1]];
                     remainingA --;
@@ -380,10 +380,10 @@
     [self.chapterArray addObject:@"Models of Chemistry Bonding"];
     [self.chapterArray addObject:@"Structure and Shapes of Molecules"];
     [self.chapterArray addObject:@"Gases and Solutions"];
-    [self.chapterArray addObject:@"Chemical Energentics and Thermodynamics"];
     [self.chapterArray addObject:@"Types of Chemical Reactions"];
     [self.chapterArray addObject:@"Chemical Kinetics"];
     [self.chapterArray addObject:@"Chemical Equilibrium"];
+    [self.chapterArray addObject:@"Chemical Energetics and Thermodynamics"];
     [self.chapterArray addObject:@"Alkanes and Alkenes"];
     [self.chapterArray addObject:@"Alkynes, Aromatics and Functional Groups"];
     [self.chapterArray addObject:@"Common Classes of Organic Reactions"];

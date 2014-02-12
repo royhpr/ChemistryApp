@@ -14,6 +14,9 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>settingsIcon</string>
+				<string>spotlightIcon</string>
+				<string>icon</string>
 				<string>mainicon</string>
 			</array>
 		</dict>

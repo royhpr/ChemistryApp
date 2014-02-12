@@ -26,9 +26,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+    {
+        self.navigationController.navigationBar.barTintColor = [UIColor orangeColor];
+    }
+    else
+    {
+        self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    }
     self.navigationItem.hidesBackButton = YES;
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
     UIView* rightItems = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 65, 30)];
     rightItems.userInteractionEnabled = YES;
@@ -80,9 +87,7 @@
 
 -(void)goBackToTable
 {
-    CustomNavigationController *newNavigtionController = [self.storyboard instantiateViewControllerWithIdentifier:@"PeriodicTableViewNav"];
-    
-    [self.navigationController presentViewController:newNavigtionController animated:NO completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -99,13 +104,12 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskLandscapeLeft;
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft];
-    return UIInterfaceOrientationLandscapeLeft;
+    return UIInterfaceOrientationLandscapeRight;
 }
 
 //web view delegate

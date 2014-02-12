@@ -32,6 +32,8 @@
 
 @property(strong,nonatomic)UIImage* scrollViewImage;
 
+@property(nonatomic, readwrite)BOOL isFistTimeInitialization;
+
 @end
 
 @implementation PeriodicTableController
@@ -81,6 +83,7 @@
     self.navigationItem.leftBarButtonItem = leftNavButton;
     
     [self initializeDatabase];
+    self.isFistTimeInitialization = YES;
 }
 
 -(void)initializeDatabase
@@ -108,17 +111,23 @@
     
     if(isExist)
     {
-        PeriodicTableElementController *portraitViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PeriodicTableElement"];
-        [portraitViewController setElementParameters:self.tappedElement];
-        CustomNavigationController *newNavigtionController = [[CustomNavigationController alloc] initWithRootViewController:portraitViewController];
+        [self performSegueWithIdentifier:@"FromPeriodicTableToElement" sender:self];
         
-        [self.navigationController presentViewController:newNavigtionController animated:NO completion:NULL];
     }
     else
     {
         UIAlertView* nonExistMsg = [[UIAlertView alloc] initWithTitle:@"" message:@"Only Atomic Numbers 1 - 40 are available" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [nonExistMsg show];
         [self performSelector:@selector(dismissCurrentMessage:) withObject:nonExistMsg afterDelay:5.0];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"FromPeriodicTableToElement"])
+    {
+        CustomNavigationController* elementController = [segue destinationViewController];
+        [(PeriodicTableElementController*)elementController.topViewController setElementParameters:self.tappedElement];
     }
 }
 
@@ -138,9 +147,7 @@
 
 -(void)showElementList
 {
-    ViewController *elementViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ElementListWebView"];
-    
-    [self.navigationController pushViewController:elementViewController animated:YES];
+    [self performSegueWithIdentifier:@"FromPeriodicTableToElementListView" sender:self];
 }
 
 - (void)checkFirstRow
@@ -155,7 +162,7 @@
         self.elementOrder = 1;
         [self searchTappedElement];
     }
-    else if(self.touchedElementCoordinateX >=5 && self.touchedElementCoordinateX <= 11)
+    else if(self.touchedElementCoordinateX >=4 && self.touchedElementCoordinateX <= 11)
     {
         [self showElementList];
     }
@@ -177,7 +184,7 @@
         self.elementOrder = 2 + self.touchedElementCoordinateX - 10;
         [self searchTappedElement];
     }
-    else if(self.touchedElementCoordinateX >=5 && self.touchedElementCoordinateX <= 11)
+    else if(self.touchedElementCoordinateX >=4 && self.touchedElementCoordinateX <= 11)
     {
         [self showElementList];
     }
@@ -320,6 +327,18 @@
     }
 }
 
+-(void)testPinch:(UIPinchGestureRecognizer*)recognizer
+{
+    UIGestureRecognizerState state = recognizer.state;
+    
+    if(state == UIGestureRecognizerStateFailed)
+    {
+        NSLog(@"the pinch fails");
+    }
+    
+    NSLog(@"pinch is working");
+}
+
 -(void)goBackToMainInterface
 {
     ViewController *mainInterface = [self.storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
@@ -337,10 +356,19 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    [self configureInterfaceView];
-    [self initializeBackgroundView];
-    [self scaleScrollViewContent];
-    [self centerScrollViewContents];
+    if(self.isFistTimeInitialization)
+    {
+        [self configureInterfaceView];
+        [self initializeBackgroundView];
+        [self scaleScrollViewContent];
+        [self centerScrollViewContents];
+        
+        self.isFistTimeInitialization = NO;
+    }
+    else
+    {
+        self.periodicTableScrollView.zoomScale = self.periodicTableScrollView.minimumZoomScale;
+    }
 }
 
 - (void)scaleScrollViewContent
@@ -361,13 +389,11 @@
     self.scrollViewImage = [UIImage imageNamed:@"fullperiodictable.jpg"];
     self.periodicTableImageView = [[UIImageView alloc] initWithImage:self.scrollViewImage];
     self.periodicTableImageView.frame = (CGRect){.origin=CGPointMake(0.0f, 0.0f), .size=self.periodicTableScrollView.frame.size};
+    //[self.periodicTableImageView setContentMode:UIViewContentModeScaleAspectFit];
     self.periodicTableImageView.userInteractionEnabled = YES;
     
     [self.periodicTableScrollView setContentSize:CGSizeMake(self.scrollViewImage.size.width,self.scrollViewImage.size.height)];
     [self.periodicTableScrollView addSubview:self.periodicTableImageView];
-    
-    self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:nil];
-    [self.periodicTableScrollView addGestureRecognizer:self.pinchRecognizer];
     
     self.singleTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showSpecificElement:)];
     [self.singleTapRecognizer setNumberOfTapsRequired:1];
@@ -377,7 +403,15 @@
     [self.doubleTapRecognizer setNumberOfTapsRequired:2];
     [self.periodicTableImageView addGestureRecognizer:self.doubleTapRecognizer];
     
+    self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(testPinch:)];
+    [self.periodicTableScrollView addGestureRecognizer:self.pinchRecognizer];
+    
     [self.singleTapRecognizer requireGestureRecognizerToFail:self.doubleTapRecognizer];
+    
+    for(UIGestureRecognizer* currentGesture in self.periodicTableScrollView.gestureRecognizers)
+    {
+        NSLog(@"current gesture recognizer is: %@", currentGesture);
+    }
 }
 
 - (void)centerScrollViewContents

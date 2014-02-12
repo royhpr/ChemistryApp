@@ -18,7 +18,11 @@
 
 @end
 
-@interface DictionaryController : UITableViewController <ElementDelegate>
+@interface DictionaryController : UIViewController <ElementDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
+
+@property (weak, nonatomic) IBOutlet UISearchBar *elementSearchBar;
+
+@property (weak, nonatomic) IBOutlet UITableView *elementListTableView;
 
 @property(nonatomic, readwrite)NSString* selectedElement;
 @property(nonatomic, readwrite)NSMutableArray* elementList;
