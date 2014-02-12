@@ -87,7 +87,7 @@
     
     if(_elementList.count != 0)
     {
-        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"" ascending:YES];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [_elementList sortUsingDescriptors:sortDescriptors];
     }

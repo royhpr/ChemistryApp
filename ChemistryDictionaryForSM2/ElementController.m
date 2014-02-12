@@ -161,17 +161,9 @@
     [self.elementPhanetic setTextAlignment:NSTextAlignmentCenter];
     [self.elementPhanetic sizeToFit];
     
-    CGRect frame = self.elementPhanetic.frame;
-    frame.size.height = ELEMENT_HEIGHT;
-    self.elementPhanetic.frame = frame;
-    
     if(self.elementInEnglish.frame.size.width > self.elementPhanetic.frame.size.width)
     {
-        self.elementPhanetic.frame = CGRectMake(self.elementPhanetic.frame.origin.x + ((self.elementInEnglish.frame.size.width - self.elementPhanetic.frame.size.width)/2.0), self.elementPhanetic.frame.origin.y, self.elementPhanetic.frame.size.width, self.elementPhanetic.frame.size.height);
-    }
-    else
-    {
-        self.elementInEnglish.frame = CGRectMake(self.elementInEnglish.frame.origin.x + (self.elementPhanetic.frame.size.width - self.elementInEnglish.frame.size.width)/2.0, self.elementInEnglish.frame.origin.y, self.elementInEnglish.frame.size.width, self.elementInEnglish.frame.size.height);
+        self.elementPhanetic.frame = CGRectMake(self.elementPhanetic.frame.origin.x + ((self.elementInEnglish.frame.size.width - self.elementPhanetic.frame.size.width)/2), self.elementPhanetic.frame.origin.y, self.elementPhanetic.frame.size.width, self.elementPhanetic.frame.size.height);
     }
 }
 

@@ -179,7 +179,7 @@
     
     if(_currentChapterElements.count != 0)
     {
-        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"" ascending:YES];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [_currentChapterElements sortUsingDescriptors:sortDescriptors];
     }

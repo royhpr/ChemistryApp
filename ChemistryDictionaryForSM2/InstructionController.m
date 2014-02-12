@@ -45,8 +45,9 @@
     float heightFactor = instructionImage.size.height / self.ViewSize.height;
     float scaleFactor = widthFactor > heightFactor ? widthFactor:heightFactor;
     
+//    UIImageView* instructionView = [[UIImageView alloc]initWithFrame:CGRectMake(self.ViewOrigin.x, self.ViewOrigin.y + 5.0, instructionImage.size.width/scaleFactor, instructionImage.size.height/scaleFactor)];
     UIImageView* instructionView = [[UIImageView alloc]initWithFrame:CGRectZero];
-    instructionView.frame = CGRectMake(self.ViewOrigin.x, (self.ViewSize.height-instructionImage.size.height/scaleFactor)/2.0 + self.navigationController.navigationBar.frame.size.height, instructionImage.size.width/scaleFactor, instructionImage.size.height/scaleFactor);
+    instructionView.frame = CGRectMake(self.ViewOrigin.x, (self.ViewSize.height-instructionImage.size.height/scaleFactor)/2.0, instructionImage.size.width/scaleFactor, instructionImage.size.height/scaleFactor);
     
     [instructionView setImage:instructionImage];
     [[self view]addSubview:instructionView];
@@ -56,6 +57,41 @@
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     
     [[self view]addGestureRecognizer:tapGestureRecognizer];
+//    UIImage* chineseVersion = [UIImage imageNamed:CHINESE_VERSION];
+//    UIImage* contributor = [UIImage imageNamed:CONTRIBUTORS];
+//    float chineseHeight = chineseVersion.size.height * self.ViewSize.width / chineseVersion.size.width;
+//    float englishHeight = englishVersion.size.height * self.ViewSize.width / englishVersion.size.width;
+//    float contributorWidth = self.ViewSize.width * 3 / 4;
+//    float contributorHeight = contributor.size.height * contributorWidth / contributor.size.width;
+    
+    
+    
+    
+//    UIImageView* chineseVersionView = [[UIImageView alloc]initWithFrame:CGRectMake(self.ViewOrigin.x, englishVersionView.frame.origin.y + englishVersionView.frame.size.height + 5.0, self.ViewSize.width, chineseHeight)];
+//    
+//    UILabel* nextViewInstruction = [[UILabel alloc]initWithFrame:CGRectZero];
+//    nextViewInstruction.text = @"Tap screen to continue";
+//    [nextViewInstruction setTextColor:[UIColor lightGrayColor]];
+//    [nextViewInstruction sizeToFit];
+//    
+//    CGRect frame = nextViewInstruction.frame;
+//    frame.origin.x = (self.ViewSize.width - frame.size.width) / 2;
+//    frame.origin.y = chineseVersionView.frame.origin.y + chineseVersionView.frame.size.height + 3.0;
+//    nextViewInstruction.frame = frame;
+//    
+//    UIImageView* contributorView = [[UIImageView alloc]initWithFrame:CGRectMake((self.ViewSize.width - contributorWidth)/2.0, self.view.frame.size.height - contributorHeight - 5.0, contributorWidth, contributorHeight)];
+//    
+//    [englishVersionView setImage:englishVersion];
+//    [chineseVersionView setImage:chineseVersion];
+//    [contributorView setImage:contributor];
+ 
+    
+    
+//    [[self view]addSubview:chineseVersionView];
+//    [[self view]addSubview:nextViewInstruction];
+//    [[self view]addSubview:contributorView];
+    
+    
 }
 
 - (void)goNext:(UIGestureRecognizer*)recognizer
@@ -69,7 +105,7 @@
     {
         self.ViewOrigin = CGPointMake(0.0, self.view.frame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
         
-        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height);
+        self.ViewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
     }
     else
     {

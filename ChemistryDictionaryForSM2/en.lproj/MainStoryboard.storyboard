@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="bPo-aR-ugA">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
+        <deployment version="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
@@ -308,7 +308,6 @@
                     <connections>
                         <outlet property="elementListTableView" destination="eml-QH-L3c" id="Ia1-8U-bOJ"/>
                         <outlet property="elementSearchBar" destination="0A2-VB-2Ph" id="hlO-rJ-0tD"/>
-                        <outlet property="try" destination="eml-QH-L3c" id="Cer-PM-vNf"/>
                         <segue destination="Oe7-1S-fws" kind="push" identifier="FromChapterToElement" id="q7s-Px-nc6"/>
                     </connections>
                 </viewController>
